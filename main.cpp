@@ -35,6 +35,7 @@ int main( ){
     double **chiMatrix;
     double *dFE;
     double *Rad;
+    double *Curvsq;
     double fE_hom;
     int radius,imax;
     double OP;
@@ -48,7 +49,8 @@ int main( ){
     Ns=create_1d_integer_array(ChainType, "Ns");            //Chain lengths
     mu=create_1d_double_array(3, "mu");                     //Chemical potentials
     dFE=create_1d_double_array(20, "dFE");                  //Bending free energy
-    Rad=create_1d_double_array(20, "Rad");
+    Rad=create_1d_double_array(20, "Rad");                  //Radius for fitting
+    Curvsq=create_1d_double_array(20, "Curvsq");            //Radius for fitting
     chiMatrix=create_2d_double_array(ChainType,ChainType,"chiMatrix");
     
     
@@ -65,7 +67,7 @@ int main( ){
     
     fE_hom=homogfE(mu,chiMatrix,f);                 //calculate homog. fE
     omega(w);                                       //Initiate omega field
-    //secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f);  //Find tensionless mmb
+    secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f);  //Find tensionless mmb
     volume=vol(dr);                                 //calculate volume
     OP = calcOP(phi,dr,volume);                     //calculate order parameter
     
@@ -76,7 +78,7 @@ int main( ){
     outFile2.open(filename2.c_str());
     
     
-    for (radius=0;radius<20;radius++){
+    for (radius=0;radius<10;radius++){
         volume=vol(dr);
         omega(w);
         
@@ -84,21 +86,20 @@ int main( ){
         OP = calcOP(phi,dr,volume);                    //calculate order parameter
         imax=mmbcentre(phi);
         Rad[radius]=r_0+imax*dr;
+        Curvsq[radius] = (4.3/Rad[radius])*(4.3/Rad[radius]);
 
         
         outFile2 <<OP<<" "<< r_0 << " "<<r_0+(double)imax*dr<<" "<<dFE[radius]<<std::endl;
         outputphi(phi,dr);
         
-        r_0*=1.2;
+        r_0*=1.5;
         
     }
     
     outFile2.close();
     
     
-    curvefit(dFE,Rad,20);
-
-    
+    curvefit(Curvsq,dFE,20);
 
     
     //Destroy memory allocations------------
@@ -109,6 +110,8 @@ int main( ){
     destroy_1d_integer_array(Ns);
     destroy_1d_double_array(f);
     destroy_2d_double_array(chiMatrix);
+    destroy_1d_double_array(Rad);
+    destroy_1d_double_array(Curvsq);
     //-------------------------------------
     
     return 0;

@@ -10,8 +10,8 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     double  fE_int, fES;            //interaction free energy and chain partition function fE
     double  epsilon, gamma;         //update step size
     double  *delphi;                //change in phi
-    double *sigma;
-    double  loop;
+    double  *sigma;
+    double  *loop;
     double  **delW;
     double  **newW;
     double  deltaW;
@@ -24,13 +24,12 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     delphi=create_1d_double_array(Nr,"delphi");
     sigma=create_1d_double_array(Nr,"sigma");
     newW=create_2d_double_array(ChainType,Nr,"newW");
+    loop=create_1d_double_array(2,"loop");
     
     currentfE=0.0;
     deltafE=0.0;
-    
     epsilon=0.05;
     gamma=0.05;
-    
     mmb=1;
 
         
@@ -41,7 +40,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         deltaW=0.0;
 
         
-        Q=Conc(phi,w,Ns,ds,dr,mu,volume,&loop);      //Calculate Chain partition function for both AB and C
+        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop);      //Calculate Chain partition function for both AB and C
         
         
         Incomp(eta,phi,delphi);           //Enforce incompressibility condition
@@ -50,8 +49,6 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         if (mmb==1){
             Pin(sigma, phi);
         }
-        
-
         
         //Calculate components for new field and interaction free energies
         for(int i=0;i<Nr;i++){
@@ -87,7 +84,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         deltafE=fabs(currentfE-oldfE);
         
         //Print free energy, difference in free energy, change in omega field to screen
-        std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop<<std::endl;
+        if (iter%100==0){std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop[0]<<" "<<loop[1]<<std::endl;}
         
 
         if (deltafE<precision && deltaW<precision){break;} //Convergence condition
@@ -97,10 +94,12 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     std::ofstream outputloop;
     
     outputloop.open("./results/loopr.dat", std::ios_base::app);
-    outputloop <<r_0<<" "<<loop<<endl;
+    outputloop <<r_0<<" "<<loop[0]<<" "<<loop[1]<<endl;
+    outputloop.close();
     
-    
+    //deallocate arrays
     destroy_1d_double_array(delphi);
+    destroy_1d_double_array(loop);
     destroy_1d_double_array(sigma);
     destroy_2d_double_array(delW);
     destroy_2d_double_array(newW);

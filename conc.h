@@ -3,7 +3,7 @@ double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,doub
     double      Q;
     double      **qA1,**qA2,**qA3,**qdagA1;
     double      **qB1,**qB2,**qdagB1;
-    double      **qA2L,**qB2L;
+    double      **qA2LL,**qB2LL,**qA2LR,**qB2LR;
     double      **qC;
     
     
@@ -21,8 +21,10 @@ double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,doub
     
     
     //Looping propagators
-    qA2L=create_2d_double_array(Nr,Ns[0]+1,"qA2L");
-    qB2L=create_2d_double_array(Nr,2*Ns[1]+1,"qB2L");
+    qA2LL=create_2d_double_array(Nr,Ns[0]+1,"qA2LL");
+    qB2LL=create_2d_double_array(Nr,2*Ns[1]+1,"qB2LL");
+    qA2LR=create_2d_double_array(Nr,Ns[0]+1,"qA2LR");
+    qB2LR=create_2d_double_array(Nr,2*Ns[1]+1,"qB2LR");
     
     diblock(qA1,qdagA1,qB1,qdagB1,w,ds,Ns,dr);
     triblock(qA2,qB2,qA3,w,ds,Ns,dr);
@@ -39,9 +41,11 @@ double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,doub
     //calculation of average concentrations over entire computation box
     phi_total(phi,dr,volume);
     
-    //calculate looping fraction
-    *loop = calcloop(qA2,qA2L,qB2L,qA3,Ns,dr,ds,w,mu);
+    //find max conc
+    int imax = mmbcentre(phi);
     
+    //calculate looping fraction
+    calcloop(qA2,qA2LL,qB2LL,qA2LR,qB2LR,qA3,Ns,dr,ds,w,mu,imax,loop);
     
     //clearing the memory
     destroy_2d_double_array(qA1);
@@ -52,8 +56,11 @@ double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,doub
     destroy_2d_double_array(qC);
     destroy_2d_double_array(qdagA1);
     destroy_2d_double_array(qdagB1);
-    destroy_2d_double_array(qA2L);
-    destroy_2d_double_array(qB2L);
+    
+    destroy_2d_double_array(qA2LL);
+    destroy_2d_double_array(qB2LL);
+    destroy_2d_double_array(qA2LR);
+    destroy_2d_double_array(qB2LR);
     
     
     return Q;

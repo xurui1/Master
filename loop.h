@@ -1,27 +1,34 @@
 
 
-double calcloop(double **qA2, double **qA2L, double **qB2L,double **qA3,int *Ns,double dr,double ds, double **w, double *mu){
+void calcloop(double **qA2, double **qA2LL, double **qB2LL,double **qA2LR, double **qB2LR,double **qA3,int *Ns,double dr,double ds, double **w, double *mu,int imax, double *loop){
+    
     
     double Q_ABA;
-    double loop;
-    double *p_loop;
-    p_loop = create_1d_double_array(Nr, "p_loop");
+    double *ploopL,*ploopR;
+    ploopL = create_1d_double_array(Nr, "ploopL");
+    ploopR = create_1d_double_array(Nr, "ploopR");
+
     
     //Generate constrained case
     for (int i=0;i<Nr;i++){
-        if (i<(Nr/2)){
-            qA2L[i][Ns[0]] = qA2[i][Ns[0]];
+        if (i<imax){
+            qA2LL[i][Ns[0]] = qA2[i][Ns[0]];
+            qA2LR[i][Ns[0]] = 0.0;
         }
         else{
-            qA2L[i][Ns[0]]=0.0;
+            qA2LL[i][Ns[0]]=0.0;
+            qA2LR[i][Ns[0]] = qA2[i][Ns[0]];
         }
     }
     
+    
     //solve diffusion equation
     for (int i=0;i<Nr;i++){
-        qB2L[i][0]=qA2L[i][Ns[0]];
+        qB2LL[i][0]=qA2LL[i][Ns[0]];
+        qB2LR[i][0]=qA2LR[i][Ns[0]];
     }
-    solvediffyQ(qB2L,w[3],ds,2*Ns[1],dr);
+    solvediffyQ(qB2LL,w[3],ds,2*Ns[1],dr);
+    solvediffyQ(qB2LR,w[3],ds,2*Ns[1],dr);
     
    //Calculate ABA chain partition function
     Q_ABA+=0.5*qA3[0][Ns[0]]/**dV(0,dr)*/;
@@ -30,21 +37,19 @@ double calcloop(double **qA2, double **qA2L, double **qB2L,double **qA3,int *Ns,
         Q_ABA+=qA3[i][Ns[0]]/**dV(i,dr)*/;
     }
     Q_ABA=exp(mu[1]*2.0)*Q_ABA/2.0;
-    //Q_ABA/=vol(dr);
-
     
     
     //Calculate probability of looping
-    for (int i=0;i<Nr/2;i++){
-        p_loop[i] = (qB2L[i][2*Ns[1]])*(qA2[i][Ns[0]])/Q_ABA;
-        loop+=p_loop[i];
+    for (int i=0;i<imax;i++){
+        ploopL[i] = (qB2LL[i][2*Ns[1]])*(qA2[i][Ns[0]])/Q_ABA;
+        loop[0]+=ploopL[i];
+    }
+    for (int i=imax;i<Nr;i++){
+        ploopR[i] = (qB2LR[i][2*Ns[1]])*(qA2[i][Ns[0]])/Q_ABA;
+        loop[1]+=ploopL[i];
     }
    
-    //loop/= Ucellvol(dr);
     
-    
-    destroy_1d_double_array(p_loop);
-    
-    return loop;
-
+    destroy_1d_double_array(ploopL);
+    destroy_1d_double_array(ploopR);
 }
