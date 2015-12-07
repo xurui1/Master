@@ -1,7 +1,7 @@
 void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     
     int Ds=200;
-    r_0=1.0;
+    r_0=0.1;
     double delr;
     
     initial=3;
@@ -20,12 +20,13 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     mu[1]=0.0;      //ABA
     mu[2]=-4.48757;    //C
     
-    ifstream inputfA;
-    inputfA.open("fA.dat");
-    inputfA >> f[0];
-    inputfA.close();
+    //ifstream inputfA;
+    //inputfA.open("fA.dat");
+    //inputfA >> f[0];
+    //inputfA.close();
     
     //Chain fraction array
+    f[0]=0.3;    //A
     f[1]=1.0-f[0];  //B
     f[2]=kappa*1.0; //C
     
@@ -90,5 +91,21 @@ void Xmatrix(double **chiMatrix, double *chi){
     chiMatrix[5][3]=chi[1]; //ChiC,B2
     chiMatrix[5][4]=chi[2]; //ChiC,A3
     chiMatrix[5][2]=0.0;    //ChiC,C
+    
+}
+
+void updateparameters(double *f, int *Ns, double ds){
+    
+    int Ds=200;
+    
+    //Chain fraction array
+    f[0]=0.3+ds;    //A
+    f[1]=1.0-f[0];  //B
+    f[2]=kappa*1.0; //C
+    
+    //Chain length array
+    Ns[0]=(Ds*f[0]);            //A blocks
+    Ns[1]=(Ds*f[1]);            //B blocks
+    Ns[2]=(Ds*f[2]);            //C blocks
     
 }

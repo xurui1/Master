@@ -7,6 +7,8 @@ void calcloop(double **qA2, double **qA2LL, double **qB2LL,double **qA2LR, doubl
     double *ploopL,*ploopR;
     ploopL = create_1d_double_array(Nr, "ploopL");
     ploopR = create_1d_double_array(Nr, "ploopR");
+    loop[0]=0.0;
+    loop[1]=0.0;
 
     
     //Generate constrained case
@@ -46,7 +48,7 @@ void calcloop(double **qA2, double **qA2LL, double **qB2LL,double **qA2LR, doubl
     }
     for (int i=imax;i<Nr;i++){
         ploopR[i] = (qB2LR[i][2*Ns[1]])*(qA2[i][Ns[0]])/Q_ABA;
-        loop[1]+=ploopL[i];
+        loop[1]+=ploopR[i];
     }
    
     

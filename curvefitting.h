@@ -1,4 +1,4 @@
-void curvefit(double *x, double *y,int n){
+double curvefit(double *x, double *y,int n){
 
     double sum[10];
     double mat[3][4];
@@ -59,16 +59,22 @@ void curvefit(double *x, double *y,int n){
 
     for(i=0;i<3;i++){
         for(j=0;j<4;j++){
-            printf(" %.3f ",mat[i][j]);
+            //cout<<mat[i][j]<<endl;
         }
-        printf("\n\n");
+        //cout<<endl;
+        //cout<<endl;
     }
 
     a3 = mat[2][3]/mat[2][2];
     a2 = mat[1][3]/mat[1][1];
     a1 = mat[0][3]/mat[0][0];
-    printf("\n\nx = %.3f",a1);
-    printf("\n\ny = %.3f",a2);
-    printf("\n\nz = %.3f",a3);
+    
+    cout.precision(15);
+    
+    //cout<<a1<<endl;
+    //cout<<a2<<endl;
+    //cout<<a3<<endl;
+    
+    return 2.0*a2;
 
 }

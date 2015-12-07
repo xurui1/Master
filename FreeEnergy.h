@@ -90,14 +90,15 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         if (deltafE<precision && deltaW<precision){break;} //Convergence condition
         
     }
-    
+
+    string filename="./results/loopr"+DoubleToStr(f[0])+".dat";
     std::ofstream outputloop;
     
-    outputloop.open("./results/loopr.dat", std::ios_base::app);
+    outputloop.open(filename.c_str(), std::ofstream::app);
     outputloop <<r_0<<" "<<loop[0]<<" "<<loop[1]<<endl;
     outputloop.close();
     
-    //deallocate arrays
+    //deallocate arrays
     destroy_1d_double_array(delphi);
     destroy_1d_double_array(loop);
     destroy_1d_double_array(sigma);

@@ -27,3 +27,13 @@ void outputphi(double **phi, double dr){
     
 }
 
+void outputkappa(double *kappaM){
+    
+    ofstream outkappa;
+    outkappa.open("./results/kappa.dat");
+    
+    for (int i=0;i<20;i++){
+        outkappa<<0.3+(double)i*0.02<<"  "<<kappaM[i]<<endl;
+    }
+    
+}

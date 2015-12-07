@@ -1,0 +1,43 @@
+
+
+*******************************************************************************
+Sun Dec  6 11:17:31 2015
+
+
+FIT:    data read from 'fe(r)_OP_-1.dat' using 2:4
+        format = x:z
+        #datapoints = 10
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f1(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 1.13275e-05       delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 0.105053
+
+initial set of free parameter values
+
+k               = 0.01
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 2.52417e-10
+rel. change during last iteration : -8.02875e-14
+
+degrees of freedom    (FIT_NDF)                        : 9
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 5.29588e-06
+variance of residuals (reduced chisquare) = WSSR/ndf   : 2.80463e-11
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+k               = 0.020131         +/- 1.594e-05    (0.07919%)
+
+
+correlation matrix of the fit parameters:
+
+               k      
+k               1.000 
