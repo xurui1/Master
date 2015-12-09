@@ -22,38 +22,25 @@
 
 int main( ){
     
-    double **w;
-    double *eta;
-    double **phi;
-    double *chi;
-    double *f;
-    double *mu;
-    double ds;
-    int *Ns;
-    double dr;
-    double volume;
-    double **chiMatrix;
-    double *dFE;
-    double *Rad;
-    double *Curvsq;
-    double *kappaM;
+    double **w=create_2d_double_array(ChainType,Nr,"w");          //Auxiliary potential fields
+    double *eta=create_1d_double_array(Nr,"eta");                //Incompressibility field;
+    double **phi=create_2d_double_array(ChainType,Nr,"phi");      //Concentration fields
+    double *chi=create_1d_double_array(ChainType,"chi");            //Interaction parameters
+    double *f=create_1d_double_array(ChainType,"f");                //Chain fractions
+    double *mu=create_1d_double_array(3, "mu");                     //Chemical potentials
+    int *Ns=create_1d_integer_array(ChainType, "Ns");            //Chain lengths
+    double **chiMatrix=create_2d_double_array(ChainType,ChainType,"chiMatrix");
+    int nradii=20,nfa=21;                                       //number of radius & fa measurements
+    double *dFE=create_1d_double_array(nradii, "dFE");                  //Bending free energy
+    double *Rad=create_1d_double_array(nradii, "Rad");                  //Radius for fitting
+    double *Curvsq=create_1d_double_array(nradii, "Curvsq");            //Radius for fitting
+    double *a1=create_1d_double_array(nfa, "a1");            //bending moduli
+    double *a2=create_1d_double_array(nfa, "a2");            //bending moduli
+    double *a3=create_1d_double_array(nfa, "a3");            //bending moduli
     double fE_hom;
-    int radius,imax;
-    double OP;
-    
-    //Allocate memory
-    w=create_2d_double_array(ChainType,Nr,"w");          //Auxiliary potential fields
-    eta=create_1d_double_array(Nr,"eta");                //Incompressibility field
-    phi=create_2d_double_array(ChainType,Nr,"phi");      //Concentration fields
-    chi=create_1d_double_array(ChainType,"chi");            //Interaction parameters
-    f=create_1d_double_array(ChainType,"f");                //Chain fractions
-    Ns=create_1d_integer_array(ChainType, "Ns");            //Chain lengths
-    mu=create_1d_double_array(3, "mu");                     //Chemical potentials
-    dFE=create_1d_double_array(20, "dFE");                  //Bending free energy
-    Rad=create_1d_double_array(20, "Rad");                  //Radius for fitting
-    Curvsq=create_1d_double_array(20, "Curvsq");            //Radius for fitting
-    kappaM=create_1d_double_array(20, "kappaM");
-    chiMatrix=create_2d_double_array(ChainType,ChainType,"chiMatrix");
+    double avgradius;
+    int imax;
+    double OP,ds,dr,volume;
     
     
     //Initial time for random number generator
@@ -82,32 +69,38 @@ int main( ){
         secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f);  //Find tensionless mmb
         volume=vol(dr);                                 //calculate volume
         OP = calcOP(phi,dr,volume);                     //calculate order parameter
+        r_0=0.1;                                        //reset radius
+        avgradius=0.0;                                  //reset avgradius
     
-        for (radius=0;radius<20;radius++){
+        for (int radius=0;radius<nradii;radius++){
             volume=vol(dr);
             omega(w);
         
             dFE[radius]=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f);
             OP = calcOP(phi,dr,volume);                    //calculate order parameter
             imax=mmbcentre(phi);
-            Rad[radius]=r_0+imax*dr;
-            Curvsq[radius] = (4.3/Rad[radius])*(4.3/Rad[radius]);
-        
+            avgradius+=imax*dr;
+            Rad[radius]=r_0;
             outFile2 <<f[0]<<" "<< r_0 << " "<<r_0+(double)imax*dr<<" "<<dFE[radius]<<std::endl;
             outputphi(phi,dr);
         
             r_0*=1.5;
         
         }
+        avgradius/=nradii;
+        for (int radius=0;radius<nradii;radius++){
+            Rad[radius]+=avgradius;
+            Curvsq[radius] = (4.3/Rad[radius])*(4.3/Rad[radius]);
+        }
     
         
     
-        kappaM[counter-1] = curvefit(Curvsq,dFE,20);
+        curvefit(Curvsq,dFE,nradii,counter,a1,a2,a3);
         
     }
     outFile2.close();
     
-    outputkappa(kappaM);
+    outputkappa(a1,a2,a3,nfa);
 
     
     //Destroy memory allocations------------

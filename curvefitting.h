@@ -1,11 +1,11 @@
-double curvefit(double *x, double *y,int n){
+void curvefit(double *x, double *y,int n,int counter, double *a1, double *a2, double *a3){
 
     double sum[10];
     double mat[3][4];
-    double temp=0,temp1=0,a1,a2,a3;
+    double temp=0,temp1=0;
     int i,j;
     float fact(int);
-
+    
     for(i=0; i<n; i++){
         temp=temp+x[i];
         temp1=temp1+y[i];
@@ -14,7 +14,7 @@ double curvefit(double *x, double *y,int n){
     sum[0]=temp;
     sum[1]=temp1;
     sum[2]=sum[3]=sum[4]=sum[5]=sum[6]=0;
-
+    
     for(i=0;i<n;i++){
         sum[2]=sum[2]+(x[i]*x[i]);
         sum[3]=sum[3]+(x[i]*x[i]*x[i]);
@@ -31,7 +31,7 @@ double curvefit(double *x, double *y,int n){
     mat[0][3]=sum[1];
     mat[1][3]=sum[5];
     mat[2][3]=sum[6];
-
+    
     temp=mat[1][0]/mat[0][0];
     temp1=mat[2][0]/mat[0][0];
     
@@ -39,7 +39,7 @@ double curvefit(double *x, double *y,int n){
         mat[i+1][j]=mat[i+1][j]-(mat[i][j]*temp);
         mat[i+2][j]=mat[i+2][j]-(mat[i][j]*temp1);
     }
-
+    
     temp=mat[2][1]/mat[1][1];
     temp1=mat[0][1]/mat[1][1];
     
@@ -47,8 +47,8 @@ double curvefit(double *x, double *y,int n){
         mat[i+1][j]=mat[i+1][j]-(mat[i][j]*temp);
         mat[i-1][j]=mat[i-1][j]-(mat[i][j]*temp1);
     }
-
-
+    
+    
     temp=mat[0][2]/mat[2][2];
     temp1=mat[1][2]/mat[2][2];
     
@@ -56,25 +56,10 @@ double curvefit(double *x, double *y,int n){
         mat[i][j]=mat[i][j]-(mat[i+2][j]*temp);
         mat[i+1][j]=mat[i+1][j]-(mat[i+2][j]*temp1);
     }
-
-    for(i=0;i<3;i++){
-        for(j=0;j<4;j++){
-            //cout<<mat[i][j]<<endl;
-        }
-        //cout<<endl;
-        //cout<<endl;
-    }
-
-    a3 = mat[2][3]/mat[2][2];
-    a2 = mat[1][3]/mat[1][1];
-    a1 = mat[0][3]/mat[0][0];
     
-    cout.precision(15);
     
-    //cout<<a1<<endl;
-    //cout<<a2<<endl;
-    //cout<<a3<<endl;
+    a3[counter-1] = mat[2][3]/mat[2][2];
+    a2[counter-1] = mat[1][3]/mat[1][1];
+    a1[counter-1] = mat[0][3]/mat[0][0];
     
-    return 2.0*a2;
-
 }

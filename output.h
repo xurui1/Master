@@ -27,13 +27,13 @@ void outputphi(double **phi, double dr){
     
 }
 
-void outputkappa(double *kappaM){
+void outputkappa(double *a1, double *a2, double *a3, int nfa){
     
     ofstream outkappa;
-    outkappa.open("./results/kappa.dat");
+    outkappa.open("./results/fitting.dat");
     
-    for (int i=0;i<20;i++){
-        outkappa<<0.3+(double)i*0.02<<"  "<<kappaM[i]<<endl;
+    for (int i=0;i<nfa;i++){
+        outkappa<<0.3+(double)i*0.02<<"  "<<a1[i]<<" "<<a2[i]<<" "<<a3[i]<<endl;
     }
     
 }
