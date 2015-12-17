@@ -30,7 +30,7 @@ int main( ){
     double *mu=create_1d_double_array(3, "mu");                     //Chemical potentials
     int *Ns=create_1d_integer_array(ChainType, "Ns");            //Chain lengths
     double **chiMatrix=create_2d_double_array(ChainType,ChainType,"chiMatrix");
-    int nradii=20,nfa=21;                                       //number of radius & fa measurements
+    int nradii=15,nfa=21;                                       //number of radius & fa measurements
     double *dFE=create_1d_double_array(nradii, "dFE");                  //Bending free energy
     double *Rad=create_1d_double_array(nradii, "Rad");                  //Radius for fitting
     double *Curvsq=create_1d_double_array(nradii, "Curvsq");            //Radius for fitting
@@ -60,16 +60,16 @@ int main( ){
     outFile2.open(filename2.c_str());
     int counter=0;
     
-    for (double df=0.0;df<=0.4;df+=0.02){
+    for (int dds=0 ;dds<=80;dds+=4){
         counter+=1;
         //Set parameters
-        updateparameters(f,Ns,df);
+        updateparameters(f,Ns,dds);
         fE_hom=homogfE(mu,chiMatrix,f);                 //calculate homog. fE
         omega(w);                                       //Initiate omega field
         secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f);  //Find tensionless mmb
         volume=vol(dr);                                 //calculate volume
         OP = calcOP(phi,dr,volume);                     //calculate order parameter
-        r_0=0.1;                                        //reset radius
+        r_0=1.0;                                        //reset radius
         avgradius=0.0;                                  //reset avgradius
     
         for (int radius=0;radius<nradii;radius++){
@@ -79,7 +79,7 @@ int main( ){
             dFE[radius]=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f);
             OP = calcOP(phi,dr,volume);                    //calculate order parameter
             imax=mmbcentre(phi);
-            avgradius+=imax*dr;
+            avgradius+=(double)imax*dr;
             Rad[radius]=r_0;
             outFile2 <<f[0]<<" "<< r_0 << " "<<r_0+(double)imax*dr<<" "<<dFE[radius]<<std::endl;
             outputphi(phi,dr);
@@ -88,9 +88,10 @@ int main( ){
         
         }
         avgradius/=nradii;
+        
         for (int radius=0;radius<nradii;radius++){
-            Rad[radius]+=avgradius;
-            Curvsq[radius] = (4.3/Rad[radius])*(4.3/Rad[radius]);
+            Rad[radius]+=7.05-2.36*f[0];   //fit radius from before
+            Curvsq[radius] = (4.3/Rad[radius]);
         }
     
         

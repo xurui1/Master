@@ -93,9 +93,10 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
 
     string filename="./results/loopr"+DoubleToStr(f[0])+".dat";
     std::ofstream outputloop;
+    int imax=mmbcentre(phi);
     
     outputloop.open(filename.c_str(), std::ofstream::app);
-    outputloop <<r_0<<" "<<loop[0]<<" "<<loop[1]<<endl;
+    outputloop <<4.3/(r_0+imax*dr)<<" "<<loop[0]<<" "<<loop[1]<<" "<<0.5*(loop[0]+loop[1])<<" "<<1.0-0.5*(loop[0]+loop[1])<<endl;
     outputloop.close();
     
     //deallocate arrays

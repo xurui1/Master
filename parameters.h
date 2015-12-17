@@ -25,15 +25,17 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     //inputfA >> f[0];
     //inputfA.close();
     
-    //Chain fraction array
-    f[0]=0.3;    //A
-    f[1]=1.0-f[0];  //B
-    f[2]=kappa*1.0; //C
+
     
     //Chain length array
-    Ns[0]=(Ds*f[0]);            //A blocks
-    Ns[1]=(Ds*f[1]);            //B blocks
-    Ns[2]=(Ds*f[2]);            //C blocks
+    Ns[0]=60;            //A blocks
+    Ns[1]=140;            //B blocks
+    Ns[2]=200;            //C blocks
+    
+    //Chain fraction array
+    f[0]=Ns[0]/Ds;      //A
+    f[1]=Ns[1]/Ds;      //B
+    f[2]=kappa*1.0;     //C
     
     //cout<<Ns[0]<<" "<<Ns[1]<<" "<<Ns[2]<<endl;
     
@@ -43,7 +45,7 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     
     
     //Step length along polymer
-    *ds=1.0/Ds;
+    *ds=1.0/(double)Ds;
     
 }
 
@@ -94,18 +96,18 @@ void Xmatrix(double **chiMatrix, double *chi){
     
 }
 
-void updateparameters(double *f, int *Ns, double ds){
+void updateparameters(double *f, int *Ns, int dds){
     
-    int Ds=200;
-    
-    //Chain fraction array
-    f[0]=0.3+ds;    //A
-    f[1]=1.0-f[0];  //B
-    f[2]=kappa*1.0; //C
+    double Ds=200.0;
     
     //Chain length array
-    Ns[0]=(Ds*f[0]);            //A blocks
-    Ns[1]=(Ds*f[1]);            //B blocks
-    Ns[2]=(Ds*f[2]);            //C blocks
+    Ns[0]=60+dds;
+    Ns[1]=140-dds;
+    
+    //Chain fraction array
+    f[0]=(double)Ns[0]/Ds;    //A
+    f[1]=(double)Ns[1]/Ds;  //B
+    f[2]=kappa*1.0; //C
+
     
 }
