@@ -27,13 +27,18 @@ void outputphi(double **phi, double dr){
     
 }
 
-void outputkappa(double *a1, double *a2, double *a3, int nfa){
+void outputkappa(double *a1, double *a2, double *a3, double *a4, double *a5, double *a6, int nfa){
     
     ofstream outkappa;
-    outkappa.open("./results/fitting.dat");
+    if (Coord==2){
+        outkappa.open("./results/fittingCylinder.dat");
+    }
+    else if (Coord==3){
+        outkappa.open("./results/fittingSphere.dat");
+    }
     
     for (int i=0;i<nfa;i++){
-        outkappa<<0.3+(double)i*0.02<<"  "<<a1[i]<<" "<<a2[i]<<" "<<a3[i]<<endl;
+        outkappa<<0.3+(double)i*0.02<<"  "<<a1[i]<<" "<<a2[i]<<" "<<a3[i]<<" "<<a4[i]<<" "<<a5[i]<<" "<<a6[i]<<endl;
     }
     
 }

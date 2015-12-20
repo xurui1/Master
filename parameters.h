@@ -1,11 +1,12 @@
 void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     
     int Ds=200;
-    r_0=0.1;
+    r_0=1.0;
     double delr;
     
+    //initial settings
     initial=3;
-    Coord=2; //if 1->Cartesian, if 2->Cylindrical, if 3->Spherical coordinate system
+    Coord=3; //if 1->Cartesian, if 2->Cylindrical, if 3->Spherical coordinate system
     
     //Length ratio of c homopolymer to diblock copolymer
     kappa=1.0;
@@ -15,16 +16,27 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     chi[1]=25.0;        //Chi_BC
     chi[2]=0.0;         //Chi_AC
     
+    //Type of system
+    poly=0;
+    
     //Chemical potential array
-    mu[0]=-20.0;      //AB
-    mu[1]=0.0;      //ABA
-    mu[2]=-4.48757;    //C
+    if (poly==0){
+        mu[0]=-20.0;      //AB
+        mu[1]=0.0;      //ABA
+        mu[2]=-4.48757;    //C
+    }
+    else if (poly==1){
+        mu[0]=0.0;      //AB
+        mu[1]=-20.0;      //ABA
+        mu[2]=-4.48757;    //C
+    }
+    else{
+        mu[0]=0.0;
+        mu[1]=0.0;
+        mu[2]=0.0;
+    }
     
-    //ifstream inputfA;
-    //inputfA.open("fA.dat");
-    //inputfA >> f[0];
-    //inputfA.close();
-    
+
 
     
     //Chain length array

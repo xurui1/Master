@@ -91,7 +91,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         
     }
 
-    string filename="./results/loopr"+DoubleToStr(f[0])+".dat";
+    string filename="./results/loop/loopr"+IntToStr((int)10*f[0])+".dat";
     std::ofstream outputloop;
     int imax=mmbcentre(phi);
     
