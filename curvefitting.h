@@ -63,3 +63,5 @@ void curvefit(double *x, double *y,int n,int counter, double *a1, double *a2, do
     a1[counter-1] = mat[0][3]/mat[0][0];
     
 }
+
+

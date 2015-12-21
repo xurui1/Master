@@ -1,15 +1,10 @@
-void set_radius(double *r_0vector, int nradii, double fA){
+void set_radius(double *r_0vector, int nradii, double fA, double A, double B){
     
     double curvature=0.64;
     double dcurv = curvature/(double)nradii;
     
     for (int i=0;i<nradii;i++){
-        if (poly==0){
-            r_0vector[i]=(4.3/curvature)-7.05+2.36*fA;
-        }
-        else if(poly==1){
-            r_0vector[i]=(4.3/curvature)-6.97+2.28*fA;
-        }
+        r_0vector[i]=(4.3/curvature)-A-B*fA;
         
         curvature-=dcurv;
         

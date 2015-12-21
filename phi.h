@@ -196,12 +196,12 @@ double calcOP(double **phi, double dr, double volume){
 
 
 int mmbcentre(double **phi){
-    int i,imax;
+    int imax;
     double phiB1B2,phiB1B2new;
     imax=0;
     phiB1B2=phi[1][0]+phi[3][0];
     
-    for (i=0;i<Nr;i++){
+    for (int i=0;i<Nr;i++){
         phiB1B2new=phi[1][i]+phi[3][i];
         
         if (phiB1B2new>phiB1B2){
@@ -211,5 +211,43 @@ int mmbcentre(double **phi){
     }
     
     return imax;
+    
+}
+
+int mmbright(double **phi,int imax){
+    int iright=imax;
+    double phiA1A2A3,phiA1A2A3new;
+    
+    phiA1A2A3 = phi[0][imax]+phi[2][imax]+phi[4][imax];
+    
+    for (int i=imax;i<Nr;i++){
+        phiA1A2A3new = phi[0][imax]+phi[2][imax]+phi[4][imax];
+        
+        if (phiA1A2A3new>phiA1A2A3){
+            iright = i;
+            phiA1A2A3=phiA1A2A3new;
+        }
+    }
+    
+    return iright;
+    
+}
+
+int mmbleft(double **phi,int imax){
+    int ileft=imax;
+    double phiA1A2A3,phiA1A2A3new;
+    
+    phiA1A2A3 = phi[0][imax]+phi[2][imax]+phi[4][imax];
+    
+    for (int i=imax;i>=0;i--){
+        phiA1A2A3new = phi[0][imax]+phi[2][imax]+phi[4][imax];
+        
+        if (phiA1A2A3new>phiA1A2A3){
+            ileft = i;
+            phiA1A2A3=phiA1A2A3new;
+        }
+    }
+    
+    return ileft;
     
 }
