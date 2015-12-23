@@ -221,7 +221,7 @@ int mmbright(double **phi,int imax){
     phiA1A2A3 = phi[0][imax]+phi[2][imax]+phi[4][imax];
     
     for (int i=imax;i<Nr;i++){
-        phiA1A2A3new = phi[0][imax]+phi[2][imax]+phi[4][imax];
+        phiA1A2A3new = phi[0][i]+phi[2][i]+phi[4][i];
         
         if (phiA1A2A3new>phiA1A2A3){
             iright = i;
@@ -240,7 +240,7 @@ int mmbleft(double **phi,int imax){
     phiA1A2A3 = phi[0][imax]+phi[2][imax]+phi[4][imax];
     
     for (int i=imax;i>=0;i--){
-        phiA1A2A3new = phi[0][imax]+phi[2][imax]+phi[4][imax];
+        phiA1A2A3new = phi[0][i]+phi[2][i]+phi[4][i];
         
         if (phiA1A2A3new>phiA1A2A3){
             ileft = i;

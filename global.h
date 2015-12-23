@@ -20,4 +20,4 @@ double kappa;
 double r_0;
 int initial;
 int Coord;
-int poly=0;
+int poly=1;

@@ -1,5 +1,5 @@
 
-void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *chi, double dr, double **chiMatrix, double *mu, double *f){
+void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *chi, double dr, double **chiMatrix, double *mu, double *f, int pin){
     
     
     double  currentfE, oldfE, deltafE;
@@ -60,7 +60,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
         Incomp(eta,phi,delphi);              //Enforce incompressibility condition
         output(dr,phi);                   //Output some data to file
         
-        if (mmb==1){Pin(sigma, phi);}
+        if (mmb==1){Pin(sigma, phi,pin);}
         
         
         

@@ -18,7 +18,7 @@ void mod_radius(double *f,double *mu,double **chiMatrix,double **w,double **phi,
         fA[counter]=f[0];
         fE_hom=homogfE(mu,chiMatrix,f);                 //calculate homog. fE
         omega(w);                                       //Initiate omega field
-        secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f);  //Find tensionless mmb
+        secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f,2*Nr/5);  //Find tensionless mmb
         volume=vol(dr);                                 //calculate volume
         r_0=1.0;
         double avgradius=0.0;
@@ -27,7 +27,7 @@ void mod_radius(double *f,double *mu,double **chiMatrix,double **w,double **phi,
             volume=vol(dr);
             omega(w);
             
-            displacer=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f);
+            displacer=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,2*Nr/5,0);
             int imax=mmbcentre(phi);
             avgradius+=(double)imax*dr;
             r_0*=3.0;

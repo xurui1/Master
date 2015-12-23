@@ -26,7 +26,7 @@ void Incomp(double *eta, double **phi, double *delphi){
 }
 
 
-void Pin(double *sigma,double **phi){
+void Pin(double *sigma,double **phi, int pin_location){
     
     int Ntip;
     int i;

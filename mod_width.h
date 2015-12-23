@@ -32,18 +32,18 @@ void mod_width(double *f,double *mu,double **chiMatrix,double **w,double **phi,d
             fA[counter]=f[0];
             fE_hom=homogfE(mu,chiMatrix,f);                 //calculate homog. fE
             omega(w);                                       //Initiate omega field
-            secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f);  //Find tensionless mmb
+            secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f,2*Nr/5);  //Find tensionless mmb
             volume=vol(dr);                                 //calculate volume
             r_0=1.0;
         
             volume=vol(dr);
             omega(w);
             
-            displacer=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f);
+            displacer=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,2*Nr/5,0);
             int imax = mmbcentre(phi);
             int imax_left=mmbleft(phi,imax);
             int imax_right=mmbright(phi,imax);
-            double width =  dr*(imax_right-imax_left);
+            double width =  dr*((double)imax_right-(double)imax_left);
         
             if (poly==0){
                 ABA_width[counter]=width;
@@ -63,9 +63,10 @@ void mod_width(double *f,double *mu,double **chiMatrix,double **w,double **phi,d
         outputwidth_fa<<fA[i]<<" "<<AB_width[i]<<" "<<ABA_width[i]<<endl;
     }
     
-    outputrad_fa.close();
+    outputwidth_fa.close();
     
     //reset parameters
-    Coord=coordinates;
+    Coord=tempcoord;
+    poly=tempPoly;
     
 }

@@ -1,4 +1,4 @@
-void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,double *eta,int *Ns,double ds,double *chi,double dr,int nfa,double A, double B, int nradii, double *dFE){
+void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,double *eta,int *Ns,double ds,double *chi,double dr,int nfa,double *A, double *B, int nradii, double *dFE){
     
     double *r_0vector=create_1d_double_array(nradii+1, "r_0vector");
     double *Rad=create_1d_double_array(nradii, "Rad");                  //Radius for fitting
@@ -16,6 +16,11 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
     string filename2;
     filename2="./results/fA_test.dat";
     outFile2.open(filename2.c_str());
+    
+    //radius ouput
+    ofstream radiout;
+    radiout.open("./results/main_radius.dat");
+    
     int counter=0;
     double volume;
     double OP;
@@ -27,7 +32,11 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         updateparameters(f,Ns,dds);
         fE_hom=homogfE(mu,chiMatrix,f);                 //calculate homog. fE
         omega(w);                                       //Initiate omega field
-        secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f);  //Find tensionless mmb
+        
+        double pin_location=10.8-A[0]-B[0]*f[0];
+        int pin = pin_location/dr;
+        
+        secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f,pin);  //Find tensionless mmb
         volume=vol(dr);                                 //calculate volume
         OP = calcOP(phi,dr,volume);                     //calculate order parameter
         //Set radius vector
@@ -40,7 +49,9 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             volume=vol(dr);
             omega(w);
             
-            dFE[radius]=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f);
+
+            
+            dFE[radius]=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,pin,1);
             OP = calcOP(phi,dr,volume);                    //calculate order parameter
             int imax=mmbcentre(phi);
             avgradius+=(double)imax*dr;
@@ -52,9 +63,11 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             
         }
         avgradius/=nradii;
+        radiout<<f[0]<<" "<<avgradius<<endl;
+        
         
         for (int radius=0;radius<nradii;radius++){
-            Rad[radius]+=A+B*f[0];   //fit radius from earlier calculations
+            Rad[radius]+=6.0;   //membrane should be centered
             
             Curv[radius] =(4.3/Rad[radius]);
             Curvsq[radius] = (4.3/Rad[radius])*(4.3/Rad[radius]);
@@ -68,6 +81,7 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         
     }
     outFile2.close();
+    radiout.close();
     
     outputkappa(a1,a2,a3,a4,a5,a6,nfa);
     
