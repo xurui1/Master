@@ -1,3 +1,4 @@
+/****************Here I output the concentration profile***********************/
 void output(double dr, double **phi){
     
     int i;
@@ -12,6 +13,7 @@ void output(double dr, double **phi){
     
 }
 
+/*******************Here I output concentration profile for various radii***********************/
 void outputphi(double **phi, double dr){
     
     ofstream outphi;
@@ -27,6 +29,7 @@ void outputphi(double **phi, double dr){
     
 }
 
+/*************************Here I output quadratic and quartic fit parameters*******************************/
 void outputkappa(double *a1, double *a2, double *a3, double *a4, double *a5, double *a6, int nfa){
     
     ofstream outkappa;

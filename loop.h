@@ -1,4 +1,4 @@
-
+/*************This is my function for calulating the looping fraction for triblock************************/
 
 void calcloop(double **qA2, double **qA2LL, double **qB2LL,double **qA2LR, double **qB2LR,double **qA3,int *Ns,double dr,double ds, double **w, double *mu,int imax, double *loop){
     

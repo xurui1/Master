@@ -1,4 +1,8 @@
 
+/*****This tridiagonal Matrix algorithm is from:***************
+************* Wikipedia algorithms c++ ************************/
+
+
 void TDMA(double* d, int n,double* a, double* b, double* c) {
 
     n--; // since we start from x0 (not x1)

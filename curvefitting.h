@@ -1,3 +1,4 @@
+//Need to add proper comments
 void curvefit(double *x, double *y,int n,int counter, double *a1, double *a2, double *a3){
 
     double sum[10];

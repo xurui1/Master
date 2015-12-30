@@ -52,20 +52,20 @@ int main( ){
     parameters(chi,f,&ds,Ns,&dr,mu);
     Xmatrix(chiMatrix,chi);
     
-    mod_width(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa);
+    //mod_width(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa);
     
-   // mod_radius(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,A,B,C,nfa);
+    mod_radius(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,A,B,C,nfa);
     
-    //ofstream outputrad;
-    //outputrad.open("./results/radius_fit.dat");
-   // outputrad<<A[0]<<" "<<B[0]<<" "<<C[0]<<endl;
-    //outputrad.close();
+    ofstream outputrad;
+    outputrad.open("./results/radius_fit.dat");
+    outputrad<<A[0]<<" "<<B[0]<<" "<<C[0]<<endl;
+    outputrad.close();
     
     //reset parameters
-    //parameters(chi,f,&ds,Ns,&dr,mu);
+    parameters(chi,f,&ds,Ns,&dr,mu);
 
     
-   // mod_main(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,nradii,dFE);
+    mod_main(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,nradii,dFE);
    
 
     

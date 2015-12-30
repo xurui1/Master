@@ -1,3 +1,5 @@
+/***************************Here I get initial omega fields*********************************/
+
 void omega(double **w){
     
     int i,x;

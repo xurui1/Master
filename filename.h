@@ -1,3 +1,5 @@
+//A couple functions for converting numbers to strings
+
 string IntToStr(int n)
 {
     stringstream result;

@@ -1,3 +1,4 @@
+//Here I set the inner radius of the computation cell
 void set_radius(double *r_0vector, int nradii, double fA, double *A, double *B){
     
     double curvature=0.64;

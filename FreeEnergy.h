@@ -1,3 +1,4 @@
+/*************************This is my main function for calculating free energies*************************/
 
 double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, double *chi, double dr, double **chiMatrix, double *mu, double volume, double *f, int pin_location, int out_loop){
     
@@ -26,10 +27,15 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     newW=create_2d_double_array(ChainType,Nr,"newW");
     loop=create_1d_double_array(2,"loop");
     
+    //set energies to zero
     currentfE=0.0;
     deltafE=0.0;
+    
+    //update parameters
     epsilon=0.05;
     gamma=0.05;
+    
+    //Turn pinning condition on
     mmb=1;
 
         
@@ -91,6 +97,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         
     }
 
+    //output loop data if certain conditions are met
     if ((f[0] == 0.3 || f[0] == 0.4 || f[0] == 0.5 || f[0] == 0.6 || f[0] == 0.7) && out_loop==1){
         string filename="./results/loop/loopr"+IntToStr((int)10*f[0])+".dat";
         std::ofstream outputloop;

@@ -1,6 +1,7 @@
 void phi_total(double **phi, double dr, double volume){
     
     //Here I am calculating the total concentration of each species using a trapezoidal (?) rule.
+    //This is an ugly function, and I'd like to rewrite it
     
     double phiA1_tot,phiB1_tot,phiC_tot;
     double phiA2_tot,phiB2_tot,phiA3_tot;
@@ -39,7 +40,7 @@ void phi_total(double **phi, double dr, double volume){
         phiC_tot+=phi[5][i]*dV(i,dr);
     }
     
-    //normalize
+    //normalize by volume
     phiA1_tot/=volume;
     phiB1_tot/=volume;
     phiA2_tot/=volume;
@@ -52,14 +53,13 @@ void phi_total(double **phi, double dr, double volume){
     
 }
 
-
+/***************Here I calculate the various concentration profiles from the propagators******************/
 void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qdagB1,double **qA2,double **qB2,double **qA3,double **qC,int *Ns,double*mu,double ds){
-    int i,s;
-    
 
     
-    for(i=0;i<Nr;i++){
-            //Empty array elements
+    for(int i=0;i<Nr;i++){
+        
+        //Empty array elements
         phi[0][i]=0.0;
         phi[1][i]=0.0;
         phi[2][i]=0.0;
@@ -68,7 +68,7 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
         phi[5][i]=0.0;
         
             //phiA1 integration
-            for(s=0;s<(int)Ns[0]+1;s++){
+            for(int s=0;s<(int)Ns[0]+1;s++){
                 if(s==0 || s==(int)Ns[0]){
                     phi[0][i]+=0.5*qA1[i][s]*qdagA1[i][Ns[0]-s]*ds;
                 }
@@ -78,7 +78,7 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
             }
             
             //phiB1 integration
-            for(s=0;s<(int)Ns[1]+1;s++){
+            for(int s=0;s<(int)Ns[1]+1;s++){
                 if(s==0 || s==(int)Ns[1]){
                     phi[1][i]+=0.5*qB1[i][s]*qdagB1[i][Ns[1]-s]*ds;
                 }
@@ -88,7 +88,7 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
             }
         
         //phiA2 integration
-        for(s=0;s<(int)Ns[0]+1;s++){
+        for(int s=0;s<(int)Ns[0]+1;s++){
             if(s==0 || s==(int)Ns[0]){
                 phi[2][i]+=0.5*qA2[i][s]*qA3[i][Ns[0]-s]*ds;
             }
@@ -98,7 +98,7 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
         }
         
         //phiB2 integration
-        for(s=0;s<2*(int)Ns[1]+1;s++){
+        for(int s=0;s<2*(int)Ns[1]+1;s++){
             if(s==0 || s==2*(int)Ns[1]){
                 phi[3][i]+=0.5*qB2[i][s]*qB2[i][2*Ns[1]-s]*ds;
             }
@@ -108,7 +108,7 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
         }
         
         //phiA3 integration
-        for(s=0;s<(int)Ns[0]+1;s++){
+        for(int s=0;s<(int)Ns[0]+1;s++){
             if(s==0 || s==(int)Ns[0]){
                 phi[4][i]+=0.5*qA3[i][s]*qA2[i][Ns[0]-s]*ds;
             }
@@ -119,7 +119,7 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
         
         
             //phiC integration
-            for(s=0;s<(int)Ns[2]+1;s++){
+            for(int s=0;s<(int)Ns[2]+1;s++){
                 if(s==0 || s==(int)Ns[2]){
                     phi[5][i]+=0.5*qC[i][s]*qC[i][Ns[2]-s]*ds;
                 }
@@ -140,6 +140,7 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
     
 }
 
+/************Here I calculate the diblock/triblock order parameter************/
 double calcOP(double **phi, double dr, double volume){
     
     double phi_ABA;
@@ -168,7 +169,7 @@ double calcOP(double **phi, double dr, double volume){
     phiB2_tot+=0.5*phi[3][Nr-1]*dV(Nr-1,dr);
     phiA3_tot+=0.5*phi[4][Nr-1]*dV(Nr-1,dr);
     
-    
+    //middle
     for (int i=1;i<(int)Nr-1;i++){
         phiA1_tot+=phi[0][i]*dV(i,dr);
         phiB1_tot+=phi[1][i]*dV(i,dr);
@@ -177,7 +178,7 @@ double calcOP(double **phi, double dr, double volume){
         phiA3_tot+=phi[4][i]*dV(i,dr);
     }
     
-    //normalize
+    //normalize by volume
     phiA1_tot/=volume;
     phiB1_tot/=volume;
     phiA2_tot/=volume;
@@ -194,7 +195,7 @@ double calcOP(double **phi, double dr, double volume){
     
 }
 
-
+//calculate centre hydrophobic maximum
 int mmbcentre(double **phi){
     int imax;
     double phiB1B2,phiB1B2new;
@@ -214,6 +215,7 @@ int mmbcentre(double **phi){
     
 }
 
+//calculate right hydrophilic maximum
 int mmbright(double **phi,int imax){
     int iright=imax;
     double phiA1A2A3,phiA1A2A3new;
@@ -233,6 +235,7 @@ int mmbright(double **phi,int imax){
     
 }
 
+//calculate left hydrophobic maximum
 int mmbleft(double **phi,int imax){
     int ileft=imax;
     double phiA1A2A3,phiA1A2A3new;

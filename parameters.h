@@ -1,3 +1,5 @@
+/****************************Here I set some parameters *****************************/
+
 void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     
     int Ds=200;
@@ -12,8 +14,8 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     kappa=1.0;
         
     //Interaction parameters
-    chi[0]=25.0;        //Chi_AB
-    chi[1]=25.0;        //Chi_BC
+    chi[0]=30.0;        //Chi_AB
+    chi[1]=30.0;        //Chi_BC
     chi[2]=0.0;         //Chi_AC
     
     //Type of system
@@ -31,13 +33,10 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
         mu[2]=-4.48757;    //C
     }
     else{
-        mu[0]=0.0;
+        mu[0]=0.0;      //Other
         mu[1]=0.0;
         mu[2]=0.0;
     }
-    
-
-
     
     //Chain length array
     Ns[0]=60;            //A blocks
@@ -60,6 +59,9 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     *ds=1.0/(double)Ds;
     
 }
+
+
+/****************Here I build the interaction Matrix************/
 
 void Xmatrix(double **chiMatrix, double *chi){
     //Interaction Matrix
@@ -107,6 +109,8 @@ void Xmatrix(double **chiMatrix, double *chi){
     chiMatrix[5][2]=0.0;    //ChiC,C
     
 }
+
+/******Here I update parameters for looping through fA*******/
 
 void updateparameters(double *f, int *Ns, int dds){
     

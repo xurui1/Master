@@ -1,3 +1,4 @@
+/***************Here I find the chemical potential for tensionless membranes****************************/
 
 void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *chi, double dr, double **chiMatrix, double *mu, double *f, int pin){
     
@@ -107,6 +108,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
     }
     
         
+        //Secant method for finding chemical potential
         if (xx==0){
             fE1=currentfE-fE_hom;
             mu[2]=mu2;

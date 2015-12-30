@@ -1,3 +1,4 @@
+/**********Here I calculate three chain partition functions by integrating over space****************/
 
 double q_partition(double **qB1,double **qA3,double **qC, double dr, int *Ns, double *mu, double volume){
     
