@@ -4,7 +4,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
     
     
     double  currentfE, oldfE, deltafE;
-    int     maxIter=1000000;
+    int     maxIter=100000;
     double precision=1.0e-5;          //convergence condition
     double mu1,mu2,mu3;
     double fE1,fE2,fE3;
@@ -100,7 +100,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
         deltafE=fabs(currentfE-oldfE);
         
         //Print free energy, difference in free energy, change in omega field to screen
-        if (iter%10==0){cout<<xx<<" "<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<endl;}
+        if (iter%100==0){cout<<xx<<" "<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<endl;}
         
         
         if (deltafE<precision && deltaW<precision){break;} //Convergence condition

@@ -35,11 +35,12 @@ void mod_radius(double *f,double *mu,double **chiMatrix,double **w,double **phi,
         avgradius/=4.0;
         test_rad[counter]=avgradius;
         outputrad_fa<<f[0]<<" "<<avgradius<<endl;
+        cout<<"fA: "<<f[0]<<"radius: "<<avgradius<<endl;
         
         counter++;
         
     }
-    curvefit(fA,test_rad,nfa,0,A,B,C);
+    curvefit(fA,test_rad,nfa,1,A,B,C);
     
     outputrad_fa.close();
     

@@ -68,8 +68,8 @@ void omega(double **w){
         Init3.close();
     }
     
-    for (i=0;i<Nr;i++){
-                std::cout << w[0][i]<<" "<<w[1][i]<<" "<<w[2][i]<<endl;
-    }
+    //for (i=0;i<Nr;i++){
+    //            std::cout << w[0][i]<<" "<<w[1][i]<<" "<<w[2][i]<<endl;
+    //}
     
 }

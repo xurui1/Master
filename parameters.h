@@ -14,8 +14,8 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     kappa=1.0;
         
     //Interaction parameters
-    chi[0]=30.0;        //Chi_AB
-    chi[1]=30.0;        //Chi_BC
+    chi[0]=25.0;        //Chi_AB
+    chi[1]=25.0;        //Chi_BC
     chi[2]=0.0;         //Chi_AC
     
     //Type of system
