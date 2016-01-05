@@ -1,4 +1,4 @@
-void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,double *eta,int *Ns,double ds,double *chi,double dr,int nfa,double *A, double *B, int nradii, double *dFE){
+void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,double *eta,int *Ns,double ds,double *chi,double dr,int nfa,double *A, double *B, int nradii, double *dFE, double *mu_vec){
     
     double *r_0vector=create_1d_double_array(nradii+1, "r_0vector");
     double *Rad=create_1d_double_array(nradii, "Rad");                  //Radius for fitting
@@ -30,13 +30,13 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         counter+=1;
         //Set parameters
         updateparameters(f,Ns,dds);
+        mu[2] = mu_vec[counter-1];                        //don't want to calc mu again
         fE_hom=homogfE(mu,chiMatrix,f);                 //calculate homog. fE
         omega(w);                                       //Initiate omega field
         
         double pin_location=10.8-A[0]-B[0]*f[0];
         int pin = pin_location/dr;
         
-        secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f,pin);  //Find tensionless mmb
         volume=vol(dr);                                 //calculate volume
         OP = calcOP(phi,dr,volume);                     //calculate order parameter
         //Set radius vector
@@ -47,25 +47,32 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         
         for (int radius=0;radius<nradii;radius++){
             volume=vol(dr);
+            
+            //initialize omega field
             omega(w);
             
-
-            
+            //calculate free energy minus homogeneneous free energy
             dFE[radius]=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,pin,1);
             OP = calcOP(phi,dr,volume);                    //calculate order parameter
-            int imax=mmbcentre(phi);
-            avgradius+=(double)imax*dr;
-            Rad[radius]=r_0;
+            int imax=mmbcentre(phi);                       //membrane center
+            avgradius+=(double)imax*dr;                    //avg membrane center
+            Rad[radius]=r_0;                               //set radius vector
+            
+            //output free energy data
             outFile2 <<f[0]<<" "<< r_0 << " "<<r_0+(double)imax*dr<<" "<<dFE[radius]<<std::endl;
+            
+            //output concentration profile
             outputphi(phi,dr);
             
+            //set new radius
             r_0=r_0vector[radius+1];
             
         }
+        //output average radius
         avgradius/=nradii;
         radiout<<f[0]<<" "<<avgradius<<endl;
         
-        
+        //build curvature and curvature squared vectors
         for (int radius=0;radius<nradii;radius++){
             Rad[radius]+=6.0;   //membrane should be centered
             
@@ -73,9 +80,10 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             Curvsq[radius] = (4.3/Rad[radius])*(4.3/Rad[radius]);
         }
         
-        
-        
+        //quadratic curve fit
         curvefit(Curv,dFE,nradii,counter,a1,a2,a3);
+        
+        //quartic curve fit
         curvefit(Curvsq,dFE,nradii,counter,a4,a5,a6);
         
         
@@ -83,6 +91,7 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
     outFile2.close();
     radiout.close();
     
+    //output curvefit results
     outputkappa(a1,a2,a3,a4,a5,a6,nfa);
     
     

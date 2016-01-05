@@ -1,4 +1,4 @@
-void mod_radius(double *f,double *mu,double **chiMatrix,double **w,double **phi,double *eta,int *Ns,double ds,double *chi,double dr, double *A, double *B, double *C, int nfa){
+void mod_radius(double *f,double *mu,double **chiMatrix,double **w,double **phi,double *eta,int *Ns,double ds,double *chi,double dr, double *A, double *B, double *C, int nfa, double *mu_vec){
     
     
     double fE_hom;
@@ -19,6 +19,8 @@ void mod_radius(double *f,double *mu,double **chiMatrix,double **w,double **phi,
         fE_hom=homogfE(mu,chiMatrix,f);                 //calculate homog. fE
         omega(w);                                       //Initiate omega field
         secant(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,f,2*Nr/5);  //Find tensionless mmb
+        mu_vec[counter] = mu[2];                        //Save chemical potential
+        
         volume=vol(dr);                                 //calculate volume
         r_0=1.0;
         double avgradius=0.0;

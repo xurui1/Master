@@ -120,7 +120,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
         }
         else if (xx==2){
             fE3=currentfE-fE_hom;
-            if (abs(fE3)>1.0e-6){
+            if (abs(fE3)>precision){
                 mu1=mu2;
                 mu2=mu3;
                 mu[2]=mu1;

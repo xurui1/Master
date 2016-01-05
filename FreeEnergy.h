@@ -35,7 +35,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     epsilon=0.05;
     gamma=0.05;
     
-    //Turn pinning condition on
+    //Turn pinning condition on for membrane
     mmb=1;
 
         
@@ -46,11 +46,14 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         deltaW=0.0;
 
         
-        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop);      //Calculate Chain partition function for both AB and C
+        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop);      //Calculate Chain partition functions
         
         
         Incomp(eta,phi,delphi);           //Enforce incompressibility condition
-        output(dr,phi);                   //Output some data to file
+        
+        if (iter%100==0){
+            output(dr,phi);                   //Output concentration data to file
+        }
         
         if (mmb==1){
             Pin(sigma, phi, pin_location);
@@ -73,9 +76,9 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
                         newW[ii][i]+=sigma[i];
                     }
                 }
-                delW[ii][i]=newW[ii][i]-w[ii][i];
+                delW[ii][i]=newW[ii][i]-w[ii][i];                    //change in omega field
                 w[ii][i]+=(gamma*delW[ii][i]-epsilon*delphi[i]);     //update omega field
-                deltaW+=fabs(delW[ii][i])*dV(i,dr);
+                deltaW+=fabs(delW[ii][i])*dV(i,dr);                  //total change
                 }
         }
         fE_int=fE(newW,phi,chiMatrix,dr,volume);

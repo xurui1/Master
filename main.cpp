@@ -35,6 +35,7 @@ int main( ){
     int *Ns=create_1d_integer_array(ChainType, "Ns");            //Chain lengths
     double **chiMatrix=create_2d_double_array(ChainType,ChainType,"chiMatrix");
     int nradii=15,nfa=21;                                       //number of radius & fa measurements
+    double *mu_vec=create_1d_double_array(nfa,"mu_vec");
     double *dFE=create_1d_double_array(nradii, "dFE");                  //Bending free energy
     double *A=create_1d_double_array(1,"A");
     double *B=create_1d_double_array(1,"B");
@@ -54,7 +55,7 @@ int main( ){
     
     //mod_width(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa);
     
-    mod_radius(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,A,B,C,nfa);
+    mod_radius(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,A,B,C,nfa,mu_vec);
     
     ofstream outputrad;
     outputrad.open("./results/radius_fit.dat");
@@ -64,8 +65,8 @@ int main( ){
     //reset parameters
     parameters(chi,f,&ds,Ns,&dr,mu);
 
-    
-    mod_main(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,nradii,dFE);
+    //main function for finding bending moduli
+    mod_main(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,nradii,dFE,mu_vec);
    
 
     
