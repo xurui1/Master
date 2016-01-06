@@ -18,6 +18,7 @@ using namespace std;
 
 double kappa;
 double r_0;
+double phi_bulk;
 int initial;
 int Coord;
 int poly=0;

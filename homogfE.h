@@ -108,6 +108,11 @@ double homogfE(double *mu, double **chimatrix, double *f){
     p_vect[3]=pB2_ave;
     p_vect[4]=pA3_ave;
     p_vect[5]=pC_ave;
+    
+    phi_bulk=0.0;
+    for (int i=0;i<5;i++){
+        phi_bulk +=p_vect[i];
+    }
 
     //build chemical potential vector
     w_vect[0]=wA1_ave;
@@ -127,9 +132,9 @@ double homogfE(double *mu, double **chimatrix, double *f){
     }
     
     //combine all energies
-    fE_hom=f_int/2.0-f_omeg-(exp(mu[0]-wA1_ave*f[0]-wB1_ave*f[1]));
-    fE_hom-=(exp(2.0*mu[1]-wA2_ave*f[0]-wA3_ave*f[0]-2.0*wB2_ave*f[1])/2.0);
-    fE_hom-=(exp(kappa*(mu[2]-wC_ave))/kappa);
+    fE_hom=f_int/2.0-f_omeg-(exp(mu[0]-wA1_ave*f[0]-wB1_ave*f[1]));         //diblock
+    fE_hom-=(exp(2.0*mu[1]-wA2_ave*f[0]-wA3_ave*f[0]-2.0*wB2_ave*f[1])/2.0);//triblock
+    fE_hom-=(exp(kappa*(mu[2]-wC_ave))/kappa);                              //homopolymer
     
     return fE_hom;
 }

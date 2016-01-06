@@ -30,14 +30,30 @@ void outputphi(double **phi, double dr){
 }
 
 /*************************Here I output quadratic and quartic fit parameters*******************************/
-void outputkappa(double *a1, double *a2, double *a3, double *a4, double *a5, double *a6, int nfa){
+void outputkappa(double *a1, double *a2, double *a3, double *a4, double *a5, double *a6, int nfa, double *chi){
     
     ofstream outkappa;
+    string filename;
+    
     if (Coord==2){
-        outkappa.open("./results/fittingCylinder.dat");
+        if (poly==0){
+            filename="./results/ABAcyl"+DoubleToStr(chi[0])+".dat";
+            outkappa.open(filename.c_str());
+        }
+        else if (poly==1){
+            filename="./results/ABcyl"+DoubleToStr(chi[0])+".dat";
+            outkappa.open(filename.c_str());
+        }
     }
     else if (Coord==3){
-        outkappa.open("./results/fittingSphere.dat");
+        if (poly==0){
+            filename="./results/ABAsph"+DoubleToStr(chi[0])+".dat";
+            outkappa.open(filename.c_str());
+        }
+        else if (poly==1){
+            filename="./results/ABsph"+DoubleToStr(chi[0])+".dat";
+            outkappa.open(filename.c_str());
+        }
     }
     
     for (int i=0;i<nfa;i++){

@@ -2,8 +2,13 @@
 
 void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     
+    //number of monomers
     int Ds=200;
+    
+    //inside radius
     r_0=1.0;
+    
+    //space step
     double delr;
     
     //initial settings

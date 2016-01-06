@@ -17,6 +17,7 @@
 #include "homogfE.h"
 #include "secant.h"
 #include "radius.h"
+#include "calcexcess.h"
 #include "FreeEnergy.h"
 #include "curvefitting.h"
 #include "mod_width.h"

@@ -2,6 +2,7 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
     
     double *r_0vector=create_1d_double_array(nradii+1, "r_0vector");
     double *Rad=create_1d_double_array(nradii, "Rad");                  //Radius for fitting
+    double *diameter=create_1d_double_array(nradii, "diameter");          //membrane diameter
     double *Curv=create_1d_double_array(nradii, "Curvsq");            //Curv sq. for fitting
     double *Curvsq=create_1d_double_array(nradii, "Curvsq");            //Curv sq. for fitting
     double *a1=create_1d_double_array(nfa, "a1");            //bending moduli const term
@@ -20,6 +21,16 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
     //radius ouput
     ofstream radiout;
     radiout.open("./results/main_radius.dat");
+    
+    
+    //output quadratic bending modulus
+    ofstream bendingout;
+    bendingout.open("./results/bending_mod.dat");
+    
+    //output average diameter
+    ofstream diamout;
+    diamout.open("./results/diameter_output.dat");
+    
     
     int counter=0;
     double volume;
@@ -43,7 +54,8 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         set_radius(r_0vector,nradii,f[0],A,B);
         
         r_0=r_0vector[0];                                        //reset radius
-        int avgradius=0.0;                                  //reset avgradius
+        double avgradius=0.0;                                  //reset avgradius
+        double avgdiameter=0.0;
         
         for (int radius=0;radius<nradii;radius++){
             volume=vol(dr);
@@ -54,6 +66,9 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             //calculate free energy minus homogeneneous free energy
             dFE[radius]=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,pin,1);
             OP = calcOP(phi,dr,volume);                    //calculate order parameter
+            diameter[radius] = calc_excess(phi,dr,volume); //calculate copolymer excess
+            avgdiameter+=diameter[radius];
+            
             int imax=mmbcentre(phi);                       //membrane center
             avgradius+=(double)imax*dr;                    //avg membrane center
             Rad[radius]=r_0;                               //set radius vector
@@ -72,12 +87,16 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         avgradius/=nradii;
         radiout<<f[0]<<" "<<avgradius<<endl;
         
+        //calculate average diameter
+        avgdiameter/=nradii;
+        diamout<<f[0]<<" "<<avgdiameter<<endl;
+        
         //build curvature and curvature squared vectors
         for (int radius=0;radius<nradii;radius++){
-            Rad[radius]+=6.0;   //membrane should be centered
+            Rad[radius]+=avgradius;   //membrane should be centered at 6, but just in case
             
-            Curv[radius] =(4.3/Rad[radius]);
-            Curvsq[radius] = (4.3/Rad[radius])*(4.3/Rad[radius]);
+            Curv[radius] =(avgdiameter/Rad[radius]);
+            Curvsq[radius] = pow(Curv[radius],2.0);
         }
         
         //quadratic curve fit
@@ -86,13 +105,23 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         //quartic curve fit
         curvefit(Curvsq,dFE,nradii,counter,a4,a5,a6);
         
+        if (Coord==2){
+            bendingout<<f[0]<<" "<<a5[counter-1]<<" "<<2.0*a5[counter-1]*200.0/(sqrt(chi[0])*avgdiameter*avgdiameter)<<endl;
+        }
+        else if (Coord==3){
+            bendingout<<f[0]<<" "<<a5[counter-1]<<" "<<a5[counter-1]*200.0/(sqrt(chi[0])*avgdiameter*avgdiameter)<<endl;
+        }
         
     }
     outFile2.close();
     radiout.close();
+    bendingout.close();
+    diamout.close();
     
-    //output curvefit results
-    outputkappa(a1,a2,a3,a4,a5,a6,nfa);
+    //output all curvefit results
+    outputkappa(a1,a2,a3,a4,a5,a6,nfa,chi);
+    //output bending moduli
+    
     
     
 }
