@@ -22,6 +22,7 @@
 #include "curvefitting.h"
 #include "mod_width.h"
 #include "mod_radius.h"
+#include "mod_phi.h"
 #include "mod_main.h"
 
 
@@ -56,7 +57,11 @@ int main( ){
     
     //mod_width(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa);
     
+    //calculate radius of membrane center
     mod_radius(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,A,B,C,nfa,mu_vec);
+    
+    mod_phi(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,C,nradii,dFE,mu_vec);
+
     
     ofstream outputrad;
     outputrad.open("./results/radius_fit.dat");
@@ -67,7 +72,7 @@ int main( ){
     parameters(chi,f,&ds,Ns,&dr,mu);
 
     //main function for finding bending moduli
-    mod_main(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,nradii,dFE,mu_vec);
+    mod_main(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,C,nradii,dFE,mu_vec);
    
 
     

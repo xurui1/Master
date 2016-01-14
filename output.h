@@ -29,30 +29,54 @@ void outputphi(double **phi, double dr){
     
 }
 
-/*************************Here I output quadratic and quartic fit parameters*******************************/
-void outputkappa(double *a1, double *a2, double *a3, double *a4, double *a5, double *a6, int nfa, double *chi){
+/*************************Here I output quadratic and quartic fit parameters****************************************/
+void outputkappa(double *a1, double *a2, double *a3, double *a4, double *a5, double *a6, int nfa, double *chi, int rad_type){
     
     ofstream outkappa;
     string filename;
     
-    if (Coord==2){
-        if (poly==0){
-            filename="./results/ABAcyl"+DoubleToStr(chi[0])+".dat";
-            outkappa.open(filename.c_str());
+    if (rad_type==0){
+        if (Coord==2){
+            if (poly==0){
+                filename="./results/radA/ABAcyl"+DoubleToStr(chi[0])+".dat";
+                outkappa.open(filename.c_str());
+            }
+            else if (poly==1){
+                filename="./results/radA/ABcyl"+DoubleToStr(chi[0])+".dat";
+                outkappa.open(filename.c_str());
+            }
         }
-        else if (poly==1){
-            filename="./results/ABcyl"+DoubleToStr(chi[0])+".dat";
-            outkappa.open(filename.c_str());
+        else if (Coord==3){
+            if (poly==0){
+                filename="./results/radA/ABAsph"+DoubleToStr(chi[0])+".dat";
+                outkappa.open(filename.c_str());
+            }
+            else if (poly==1){
+                filename="./results/radA/ABsph"+DoubleToStr(chi[0])+".dat";
+                outkappa.open(filename.c_str());
+            }
         }
     }
-    else if (Coord==3){
-        if (poly==0){
-            filename="./results/ABAsph"+DoubleToStr(chi[0])+".dat";
-            outkappa.open(filename.c_str());
+    else if (rad_type==1){
+        if (Coord==2){
+            if (poly==0){
+                filename="./results/radB/ABAcyl"+DoubleToStr(chi[0])+".dat";
+                outkappa.open(filename.c_str());
+            }
+            else if (poly==1){
+                filename="./results/radB/ABcyl"+DoubleToStr(chi[0])+".dat";
+                outkappa.open(filename.c_str());
+            }
         }
-        else if (poly==1){
-            filename="./results/ABsph"+DoubleToStr(chi[0])+".dat";
-            outkappa.open(filename.c_str());
+        else if (Coord==3){
+            if (poly==0){
+                filename="./results/radB/ABAsph"+DoubleToStr(chi[0])+".dat";
+                outkappa.open(filename.c_str());
+            }
+            else if (poly==1){
+                filename="./results/radB/ABsph"+DoubleToStr(chi[0])+".dat";
+                outkappa.open(filename.c_str());
+            }
         }
     }
     
@@ -61,3 +85,85 @@ void outputkappa(double *a1, double *a2, double *a3, double *a4, double *a5, dou
     }
     
 }
+
+/***************Here I output a concentration profile**********************/
+void outputphi_fa(double **phi, double dr, double fA, int nfa){
+    
+    ofstream outphifa;
+    string filename;
+    
+    if (Coord==2){
+        if (poly==0){
+            filename="./results/phi_FA/ABAcyl"+DoubleToStr(fA)+".dat";
+            outphifa.open(filename.c_str());
+        }
+        else if (poly==1){
+            filename="./results/phi_FA/ABcyl"+DoubleToStr(fA)+".dat";
+            outphifa.open(filename.c_str());
+        }
+    }
+    else if (Coord==3){
+        if (poly==0){
+            filename="./results/phi_FA/ABAsph"+DoubleToStr(fA)+".dat";
+            outphifa.open(filename.c_str());
+        }
+        else if (poly==1){
+            filename="./results/phi_FA/ABsph"+DoubleToStr(fA)+".dat";
+            outphifa.open(filename.c_str());
+        }
+    }
+    else if (Coord==1){
+        if (poly==0){
+            filename="./results/phi_FA/ABAplane"+DoubleToStr(fA)+".dat";
+            outphifa.open(filename.c_str());
+        }
+        else if (poly==1){
+            filename="./results/phi_FA/ABplane"+DoubleToStr(fA)+".dat";
+            outphifa.open(filename.c_str());
+        }
+    }
+    
+    for (int i=0;i<nfa;i++){
+        outphifa<<(double)i*dr<<"  "<<phi[0][i]<<" "<<phi[1][i]<<" "<<phi[2][i]<<" "<<phi[3][i]<<" "<<phi[4][i]<<" "<<phi[5][i]<<std::endl;
+    }
+    
+    
+}
+
+void outputfE_FA(double fA, double *Curv, double *dFE,int nradii){
+    
+    fstream outfE_FA;
+    string filename;
+    
+    if (Coord==2){
+        if (poly==0){
+            filename="./results/fE/ABAcyl"+DoubleToStr(fA)+".dat";
+            outfE_FA.open(filename.c_str());
+        }
+        else if (poly==1){
+            filename="./results/fE/ABcyl"+DoubleToStr(fA)+".dat";
+            outfE_FA.open(filename.c_str());
+        }
+    }
+    else if (Coord==3){
+        if (poly==0){
+            filename="./results/fE/ABAsph"+DoubleToStr(fA)+".dat";
+            outfE_FA.open(filename.c_str());
+        }
+        else if (poly==1){
+            filename="./results/fE/ABsph"+DoubleToStr(fA)+".dat";
+            outfE_FA.open(filename.c_str());
+        }
+    }
+    
+    for (int i=0;i<nradii;i++){
+        outfE_FA<<fA<<Curv[i]<<dFE[i]<<endl;
+    }
+    
+    
+    
+    
+}
+
+
+

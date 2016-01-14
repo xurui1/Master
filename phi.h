@@ -254,3 +254,27 @@ int mmbleft(double **phi,int imax){
     return ileft;
     
 }
+
+//calculate the midpoint between the two locations where phiA = phi B
+int mmb_half(double **phi, int pin){
+    
+    //int pin is the pinning location, which is predetermined
+    
+    int outer_intersection = 0;
+    double del_phi=1.0;
+    double del_phi_new = 1.0;
+    
+    for (int i=pin;i<Nr;i++){
+        
+        del_phi_new = phi[0][i] + phi[2][i]+ phi[4][i] - phi[1][i] - phi[3][i];
+        
+        if (del_phi_new<del_phi){
+            del_phi = del_phi_new;
+            outer_intersection = i;
+        }
+            
+    }
+    
+    return (outer_intersection+pin)/2;
+    
+}

@@ -9,6 +9,7 @@ double calc_excess(double **phi,double dr, double volume){
     }
     
     Omega/=volume;
+    Omega*=dr*(double)Nr;
     
     return Omega;
 }

@@ -5,6 +5,8 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     //number of monomers
     int Ds=200;
     
+    double chi_input;
+    
     //inside radius
     r_0=1.0;
     
@@ -17,10 +19,15 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     
     //Length ratio of c homopolymer to diblock copolymer
     kappa=1.0;
+    
+    ifstream inputchi;
+    inputchi.open("chi.dat");
+    inputchi >> chi_input;
+    inputchi.close();
         
     //Interaction parameters
-    chi[0]=25.0;        //Chi_AB
-    chi[1]=25.0;        //Chi_BC
+    chi[0]=chi_input;        //Chi_AB
+    chi[1]=chi_input;        //Chi_BC
     chi[2]=0.0;         //Chi_AC
     
     //Type of system
