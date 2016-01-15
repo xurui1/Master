@@ -1,4 +1,4 @@
-void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,double *eta,int *Ns,double ds,double *chi,double dr,int nfa,double *A, double *B, double *C, int nradii, double *dFE, double *mu_vec){
+void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,double *eta,int *Ns,double ds,double *chi,double dr,int nfa,double *A, double *B, double *C,double *D, double *E, double *F, int nradii, double *dFE, double *mu_vec){
     
     double *r_0vector=create_1d_double_array(nradii+1, "r_0vector");
     double *Rad=create_1d_double_array(nradii, "Rad");                  //Radius for fitting
@@ -85,10 +85,12 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             avgdiameter+=diameter[radius];
             
             int imax=mmbcentre(phi);                       //membrane center
-            int ihalf=(phi,pin);
+            int ihalf=(phi,2*Nr/5);
+            
             avgradius+=(double)imax*dr;                    //avg membrane center
             avgmiddle+=(double)ihalf*dr;
-            Rad[radius]=r_0;                               //set radius vector
+            
+            Rad[radius]=r_0;                               //set radius vectors
             Rad2[radius]=r_0;
             
             //output free energy data
@@ -113,8 +115,12 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         
         //build curvature and curvature squared vectors
         for (int radius=0;radius<nradii;radius++){
-            Rad[radius]+=avgradius;   //membrane should be centered at 6, but just in case
-            Rad2[radius]+=avgmiddle;
+            //Rad[radius]+=avgradius;   //membrane should be centered at 6, but just in case
+            //Rad2[radius]+=avgmiddle;
+            
+            Rad[radius]+=(A[0]+f[0]*B[0]+f[0]*f[0]*C[0]);
+            Rad2[radius]+=(D[0]+f[0]*E[0]+f[0]*f[0]*F[0]);
+
             
             Curv[radius] =(4.3/Rad[radius]);
             Curvsq[radius] = pow(Curv[radius],2.0);

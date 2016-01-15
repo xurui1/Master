@@ -123,7 +123,7 @@ void outputphi_fa(double **phi, double dr, double fA, int nfa){
         }
     }
     
-    for (int i=0;i<nfa;i++){
+    for (int i=0;i<Nr;i++){
         outphifa<<(double)i*dr<<"  "<<phi[0][i]<<" "<<phi[1][i]<<" "<<phi[2][i]<<" "<<phi[3][i]<<" "<<phi[4][i]<<" "<<phi[5][i]<<std::endl;
     }
     
