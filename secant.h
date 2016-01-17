@@ -16,6 +16,8 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
     double  epsilon, gamma;
     double  *delphi;
     double *loop;
+    double *bridge;
+
     double *sigma;
     double  **delW;
     double  **newW;
@@ -27,6 +29,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
     delW=create_2d_double_array(ChainType,Nr,"delW");
     delphi=create_1d_double_array(Nr,"delphi");
     loop=create_1d_double_array(Nr, "loop");
+    bridge=create_1d_double_array(Nr, "bridge");
     sigma=create_1d_double_array(Nr,"sigma");
     newW=create_2d_double_array(ChainType,Nr,"newW");
     
@@ -55,7 +58,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
         deltaW=0.0;
         
         
-        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop);       //Calculate Chain partition function for both AB and C
+        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop,bridge);       //Calculate Chain partition function for both AB and C
         
         
         Incomp(eta,phi,delphi);              //Enforce incompressibility condition

@@ -59,7 +59,7 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
         fE_hom=homogfE(mu,chiMatrix,f);                 //calculate homog. fE
         omega(w);                                       //Initiate omega field
         
-        double pin_location=10.8-A[0]-B[0]*f[0]-C[0]*f[0];
+        double pin_location=10.8-D[0]-(E[0]*f[0])-(F[0]*f[0]*f[0]);
         int pin = pin_location/dr;
         
         volume=vol(dr);                                 //calculate volume
@@ -79,13 +79,13 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             omega(w);
             
             //calculate free energy minus homogeneneous free energy
-            dFE[radius]=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,2*Nr/5,1);
+            dFE[radius]=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,pin,1);
             OP = calcOP(phi,dr,volume);                    //calculate order parameter
             diameter[radius] = calc_excess(phi,dr,volume); //calculate copolymer excess
             avgdiameter+=diameter[radius];
             
-            int imax=mmbcentre(phi);                       //membrane center
-            int ihalf=(phi,2*Nr/5);
+            int imax=mmbcentre(phi);                       //membrane center (max phib)
+            int ihalf=(phi,imax,pin);                      //membrane middle (1/2 phib = phiA)
             
             avgradius+=(double)imax*dr;                    //avg membrane center
             avgmiddle+=(double)ihalf*dr;
@@ -118,8 +118,11 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             //Rad[radius]+=avgradius;   //membrane should be centered at 6, but just in case
             //Rad2[radius]+=avgmiddle;
             
-            Rad[radius]+=(A[0]+f[0]*B[0]+f[0]*f[0]*C[0]);
-            Rad2[radius]+=(D[0]+f[0]*E[0]+f[0]*f[0]*F[0]);
+            //Rad[radius]+=(A[0]+f[0]*B[0]+f[0]*f[0]*C[0]);
+            //Rad2[radius]+=(D[0]+f[0]*E[0]+f[0]*f[0]*F[0]);
+            
+            Rad[radius]+=6.0;
+            Rad2[radius]+=6.0;
 
             
             Curv[radius] =(4.3/Rad[radius]);

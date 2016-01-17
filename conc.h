@@ -1,9 +1,10 @@
-double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,double volume, double *loop){
+double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,double volume, double *loop, double *bridge){
     
     double      Q;
     double      **qA1,**qA2,**qA3,**qdagA1;
     double      **qB1,**qB2,**qdagB1;
     double      **qA2LL,**qB2LL,**qA2LR,**qB2LR;
+    double      **qA2BL,**qB2BL,**qA2BR,**qB2BR;
     double      **qC;
     
     
@@ -26,6 +27,12 @@ double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,doub
     qA2LR=create_2d_double_array(Nr,Ns[0]+1,"qA2LR");
     qB2LR=create_2d_double_array(Nr,2*Ns[1]+1,"qB2LR");
     
+    //bridging propagators
+    qA2BL=create_2d_double_array(Nr,Ns[0]+1,"qA2BL");
+    qB2BL=create_2d_double_array(Nr,2*Ns[1]+1,"qB2BL");
+    qA2BR=create_2d_double_array(Nr,Ns[0]+1,"qA2BR");
+    qB2BR=create_2d_double_array(Nr,2*Ns[1]+1,"qB2BR");
+    
     diblock(qA1,qdagA1,qB1,qdagB1,w,ds,Ns,dr);
     triblock(qA2,qB2,qA3,w,ds,Ns,dr);
     homopolymer(qC,w,ds,Ns,dr);
@@ -47,6 +54,11 @@ double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,doub
     //calculate looping fraction
     calcloop(qA2,qA2LL,qB2LL,qA2LR,qB2LR,qA3,Ns,dr,ds,w,mu,imax,loop);
     
+    
+    //calculate bridging fraction
+    calcbridge(qA2,qA2BL,qB2BL,qA2BR,qB2BR,qA3,Ns,dr,ds,w,mu,imax,loop);
+    
+    
     //clearing the memory
     destroy_2d_double_array(qA1);
     destroy_2d_double_array(qB1);
@@ -61,6 +73,11 @@ double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,doub
     destroy_2d_double_array(qB2LL);
     destroy_2d_double_array(qA2LR);
     destroy_2d_double_array(qB2LR);
+    
+    destroy_2d_double_array(qA2BL);
+    destroy_2d_double_array(qB2BL);
+    destroy_2d_double_array(qA2BR);
+    destroy_2d_double_array(qB2BR);
     
     
     return Q;

@@ -13,6 +13,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     double  *delphi;                //change in phi
     double  *sigma;
     double  *loop;
+    double  *bridge;
     double  **delW;
     double  **newW;
     double  deltaW;
@@ -26,6 +27,8 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     sigma=create_1d_double_array(Nr,"sigma");
     newW=create_2d_double_array(ChainType,Nr,"newW");
     loop=create_1d_double_array(2,"loop");
+    bridge=create_1d_double_array(2,"bridge");
+
     
     //set energies to zero
     currentfE=0.0;
@@ -46,7 +49,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         deltaW=0.0;
 
         
-        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop);      //Calculate Chain partition functions
+        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop,bridge);      //Calculate Chain partition functions
         
         
         Incomp(eta,phi,delphi);           //Enforce incompressibility condition
@@ -107,13 +110,14 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         int imax=mmbcentre(phi);
     
         outputloop.open(filename.c_str(), std::ofstream::app);
-        outputloop <<4.3/(r_0+imax*dr)<<" "<<loop[0]<<" "<<loop[1]<<" "<<0.5*(loop[0]+loop[1])<<" "<<1.0-0.5*(loop[0]+loop[1])<<endl;
+        outputloop <<4.3/(r_0+imax*dr)<<" "<<loop[0]<<" "<<loop[1]<<" "<<0.5*(loop[0]+loop[1])<<" "<<bridge[0]<<" "<<bridge[1]<<" "<<0.5*(bridge[0]+bridge[1])<<" "<<0.5*(loop[0]+loop[1]) - 0.5*(bridge[0]+bridge[1])<< endl;
         outputloop.close();
     }
     
     //deallocate arrays
     destroy_1d_double_array(delphi);
     destroy_1d_double_array(loop);
+    destroy_1d_double_array(bridge);
     destroy_1d_double_array(sigma);
     destroy_2d_double_array(delW);
     destroy_2d_double_array(newW);

@@ -256,7 +256,7 @@ int mmbleft(double **phi,int imax){
 }
 
 //calculate the midpoint between the two locations where phiA = phi B
-int mmb_half(double **phi, int pin){
+int mmb_half(double **phi, int imax, int pin){
     
     //int pin is the pinning location, which is predetermined
     
@@ -264,7 +264,7 @@ int mmb_half(double **phi, int pin){
     double del_phi=1.0;
     double del_phi_new = 1.0;
     
-    for (int i=pin;i<Nr;i++){
+    for (int i=imax;i<Nr;i++){
         
         del_phi_new = phi[0][i] + phi[2][i]+ phi[4][i] - phi[1][i] - phi[3][i];
         
