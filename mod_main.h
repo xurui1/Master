@@ -85,7 +85,7 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             avgdiameter+=diameter[radius];
             
             int imax=mmbcentre(phi);                       //membrane center (max phib)
-            int ihalf=(phi,imax,pin);                      //membrane middle (1/2 phib = phiA)
+            int ihalf=mmb_half(phi,imax,pin);                      //membrane middle (1/2 phib = phiA)
             
             avgradius+=(double)imax*dr;                    //avg membrane center
             avgmiddle+=(double)ihalf*dr;

@@ -34,7 +34,7 @@ void mod_radius(double *f,double *mu,double **chiMatrix,double **w,double **phi,
             
             displacer=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,2*Nr/5,0);
             int imax=mmbcentre(phi);
-            int ihalf=(phi,2*Nr/5);
+            int ihalf=mmb_half(phi,imax,2*Nr/5);
 
             avgradius+=(double)imax*dr;
             avgmiddle+=(double)ihalf*dr;

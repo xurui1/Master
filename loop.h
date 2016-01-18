@@ -87,6 +87,7 @@ void calcbridge(double **qA2, double **qA2BL, double **qB2BL,double **qA2BR, dou
         qB2BL[i][0]=qA2BL[i][Ns[0]];
         qB2BR[i][0]=qA2BR[i][Ns[0]];
     }
+    
     solvediffyQ(qB2BL,w[3],ds,2*Ns[1],dr);
     solvediffyQ(qB2BR,w[3],ds,2*Ns[1],dr);
     
@@ -102,11 +103,11 @@ void calcbridge(double **qA2, double **qA2BL, double **qB2BL,double **qA2BR, dou
     //Calculate probability of bridging
     for (int i=0;i<imax;i++){
         pbridgeR[i] = (qB2BR[i][2*Ns[1]])*(qA2[i][Ns[0]])/Q_ABA;
-        bridge[1]+=pbridgeL[i];
+        bridge[1]+=pbridgeR[i];
     }
     for (int i=imax;i<Nr;i++){
         pbridgeR[i] = (qB2BL[i][2*Ns[1]])*(qA2[i][Ns[0]])/Q_ABA;
-        bridge[0]+=pbridgeR[i];
+        bridge[0]+=pbridgeL[i];
     }
     
     
