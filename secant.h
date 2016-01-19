@@ -13,7 +13,6 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
     int coordinate;
     double  Q;
     double  fE_int, fES;            //interaction free energy and chain partition function fE
-    double  epsilon, gamma;
     double  *delphi;
     double *loop;
     double *bridge;
@@ -39,8 +38,6 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
     mu1=mu[2];
     mu2=mu[2]+0.01;
     
-    epsilon=0.05;
-    gamma=0.05;
     
     iter=0;
     mmb=1;
@@ -62,7 +59,10 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
         
         
         Incomp(eta,phi,delphi);              //Enforce incompressibility condition
-        output(dr,phi);                   //Output some data to file
+        
+        if (iter%100==0) {
+            output(dr,phi);                   //Output some data to file
+        }
         
         if (mmb==1){Pin(sigma, phi,pin);}
         
@@ -86,7 +86,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
                     }
                 }
                 delW[ii][i]=newW[ii][i]-w[ii][i];
-                w[ii][i]+=(gamma*delW[ii][i]-epsilon*delphi[i]);     //update omega field
+                w[ii][i]+=(gamma_up*delW[ii][i]-epsilon_up*delphi[i]);     //update omega field
                 deltaW+=fabs(delW[ii][i])*dV(i,dr);
             }
         }

@@ -11,9 +11,11 @@
 
 using namespace std;
 
-#define Nr 200
+#define Nr 100
 #define ChainType 6
 #define Pi 3.14159
+
+
 
 
 double kappa;
@@ -22,3 +24,12 @@ double phi_bulk;
 int initial;
 int Coord;
 int poly=0;
+
+//define my update parameters
+double gamma_up = 0.005;
+double epsilon_up = 0.005;
+
+
+
+
+

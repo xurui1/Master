@@ -23,6 +23,7 @@
 #include "mod_width.h"
 #include "mod_radius.h"
 #include "mod_phi.h"
+#include "mod_phif50.h"
 #include "mod_main.h"
 
 
@@ -61,11 +62,12 @@ int main( ){
     //mod_width(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa);
     
     //calculate radius of membrane center
-    mod_radius(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,A,B,C,D,E,F,nfa,mu_vec);
+    //mod_radius(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,A,B,C,D,E,F,nfa,mu_vec);
     
     
     //calculate concentration profiles
     //mod_phi(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,C,nradii,dFE,mu_vec);
+    mod_phif50(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr);
 
     
     ofstream outputrad;

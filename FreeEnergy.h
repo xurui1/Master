@@ -9,7 +9,6 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     int     mmb;                    //Turns on pinning condition
     double  Q;                      //Chain partition functions
     double  fE_int, fES;            //interaction free energy and chain partition function fE
-    double  epsilon, gamma;         //update step size
     double  *delphi;                //change in phi
     double  *sigma;
     double  *loop;
@@ -34,9 +33,6 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     currentfE=0.0;
     deltafE=0.0;
     
-    //update parameters
-    epsilon=0.05;
-    gamma=0.05;
     
     //Turn pinning condition on for membrane
     mmb=1;
@@ -80,7 +76,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
                     }
                 }
                 delW[ii][i]=newW[ii][i]-w[ii][i];                    //change in omega field
-                w[ii][i]+=(gamma*delW[ii][i]-epsilon*delphi[i]);     //update omega field
+                w[ii][i]+=(gamma_up*delW[ii][i]-epsilon_up*delphi[i]);     //update omega field
                 deltaW+=fabs(delW[ii][i])*dV(i,dr);                  //total change
                 }
         }
