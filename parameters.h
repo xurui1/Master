@@ -42,7 +42,7 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     else if (poly==1){
         mu[0]=0.0;      //AB
         mu[1]=-20.0;      //ABA
-        mu[2]=-4.48757;    //C
+        mu[2]=-5.0;    //C
     }
     else{
         mu[0]=0.0;      //Other
@@ -51,9 +51,9 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     }
     
     //Chain length array
-    Ns[0]=60;            //A blocks
-    Ns[1]=196;            //B blocks
-    Ns[2]=256;            //C blocks
+    Ns[0]=30;            //A blocks
+    Ns[1]=70;            //B blocks
+    Ns[2]=100;            //C blocks
     
     //Chain fraction array
     f[0]=Ns[0]/Ds;      //A
@@ -126,11 +126,11 @@ void Xmatrix(double **chiMatrix, double *chi){
 
 void updateparameters(double *f, int *Ns, int dds){
     
-    double Ds=256.0;
+    double Ds=100.0;
     
     //Chain length array
-    Ns[0]=60+dds;
-    Ns[1]=196-dds;
+    Ns[0]=30+dds;
+    Ns[1]=70-dds;
     
     //Chain fraction array
     f[0]=(double)Ns[0]/Ds;    //A

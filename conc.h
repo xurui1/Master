@@ -1,4 +1,4 @@
-double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,double volume, double *loop, double *bridge){
+double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,double volume, double *loop, double *bridge, int out_loop, int iter,int pin_location){
     
     double      Q;
     double      **qA1,**qA2,**qA3,**qdagA1;
@@ -50,14 +50,16 @@ double Conc(double **phi,double **w,int *Ns,double ds,double dr, double *mu,doub
     
     //find max conc
     int imax = mmbcentre(phi);
+    int ihalf = mmb_half(phi,imax,pin_location);
     
-    //calculate looping fraction
-    calcloop(qA2,qA2LL,qB2LL,qA2LR,qB2LR,qA3,Ns,dr,ds,w,mu,imax,loop);
+    if (out_loop==1 && iter%100==0 ){
+        //calculate looping fraction
+        calcloop(qA2,qA2LL,qB2LL,qA2LR,qB2LR,qA3,Ns,dr,ds,w,mu,ihalf,loop);
     
     
-    //calculate bridging fraction
-    calcbridge(qA2,qA2BL,qB2BL,qA2BR,qB2BR,qA3,Ns,dr,ds,w,mu,imax,loop);
-    
+        //calculate bridging fraction
+        calcbridge(qA2,qA2BL,qB2BL,qA2BR,qB2BR,qA3,Ns,dr,ds,w,mu,ihalf,bridge);
+    }
     
     //clearing the memory
     destroy_2d_double_array(qA1);

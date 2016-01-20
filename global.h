@@ -28,8 +28,8 @@ int poly=0;
 //define my update parameters
 double gamma_up = 0.005;
 double epsilon_up = 0.005;
-
-
+//set to 0.05 for chi<30
+//set to 0.005 for 30<chi<40
 
 
 

@@ -51,7 +51,7 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
     double OP;
     double fE_hom;
     
-    for (int dds=0 ;dds<=80;dds+=4){
+    for (int dds=0 ;dds<=80;dds+=2){
         counter+=1;
         //Set parameters s
         updateparameters(f,Ns,dds);

@@ -1,10 +1,10 @@
 /***************Here I find the chemical potential for tensionless membranes****************************/
 
-void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *chi, double dr, double **chiMatrix, double *mu, double *f, int pin){
+void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *chi, double dr, double **chiMatrix, double *mu, double *f, int pin_location){
     
     
     double  currentfE, oldfE, deltafE;
-    int     maxIter=100000;
+    int     maxIter=1e6;
     double precision=1.0e-5;          //convergence condition
     double mu1,mu2,mu3;
     double fE1,fE2,fE3;
@@ -55,7 +55,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
         deltaW=0.0;
         
         
-        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop,bridge);       //Calculate Chain partition function for both AB and C
+        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop,bridge,0,iter,pin_location);       //Calculate Chain partition function for both AB and C
         
         
         Incomp(eta,phi,delphi);              //Enforce incompressibility condition
@@ -64,7 +64,7 @@ void secant(double **w, double **phi, double *eta, int *Ns, double ds, double *c
             output(dr,phi);                   //Output some data to file
         }
         
-        if (mmb==1){Pin(sigma, phi,pin);}
+        if (mmb==1){Pin(sigma, phi,pin_location);}
         
         
         

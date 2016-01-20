@@ -45,7 +45,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         deltaW=0.0;
 
         
-        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop,bridge);      //Calculate Chain partition functions
+        Q=Conc(phi,w,Ns,ds,dr,mu,volume,loop,bridge,out_loop,iter, pin_location);      //Calculate Chain partition functions
         
         
         Incomp(eta,phi,delphi);           //Enforce incompressibility condition
