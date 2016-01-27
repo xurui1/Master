@@ -37,7 +37,7 @@ int main( ){
     double *mu=create_1d_double_array(3, "mu");                     //Chemical potentials
     int *Ns=create_1d_integer_array(ChainType, "Ns");            //Chain lengths
     double **chiMatrix=create_2d_double_array(ChainType,ChainType,"chiMatrix");
-    int nradii=20,nfa=21;                                       //number of radius & fa measurements
+    int nradii=15,nfa=21;                                       //number of radius & fa measurements
     double *mu_vec=create_1d_double_array(nfa,"mu_vec");
     double *dFE=create_1d_double_array(nradii, "dFE");                  //Bending free energy
     double *A=create_1d_double_array(1,"A");                        //fitting constants for mmb radius
@@ -67,7 +67,7 @@ int main( ){
     
     //calculate concentration profiles
     //mod_phi(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,C,nradii,dFE,mu_vec);
-    //mod_phif50(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr);
+    mod_phif50(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr);
 
     
     ofstream outputrad;

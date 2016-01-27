@@ -7,7 +7,9 @@ void mod_phi(double *f,double *mu,double **chiMatrix,double **w,double **phi,dou
     double OP;
     double fE_hom;
     
-    for (int dds=0 ;dds<=80;dds+=4){
+    int ds_increment = 0.4*(double)Ns[2]/((double)nfa-1.0);
+    
+    for (int dds=0; f[0]<0.7 ;dds+= ds_increment){
         counter+=1;
         //Set parameters s
         updateparameters(f,Ns,dds);

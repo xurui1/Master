@@ -4,7 +4,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
     
     
     double  currentfE, oldfE, deltafE;
-    int     maxIter=100000;
+    int     maxIter=1e6;
     double precision=1e-5;          //convergence condition
     int     mmb;                    //Turns on pinning condition
     double  Q;                      //Chain partition functions
@@ -50,7 +50,7 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         
         Incomp(eta,phi,delphi);           //Enforce incompressibility condition
         
-        if (iter%100==0){
+        if (iter%1000==0){
             output(dr,phi);                   //Output concentration data to file
         }
         
@@ -92,7 +92,9 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         deltafE=fabs(currentfE-oldfE);
         
         //Print free energy, difference in free energy, change in omega field to screen
-        if (iter%100==0){std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop[0]<<" "<<loop[1]<<std::endl;}
+        if (iter%1000==0 && out_loop==1){std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop[0]<<" "<<loop[1]<<" "<<bridge[0]<<" "<<bridge[1]<<std::endl;}
+        else if  (iter%1000==0 && out_loop==0){std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop[0]<<" "<<loop[1]<<" "<<bridge[0]<<" "<<bridge[1]<<std::endl;}
+
         
 
         if (deltafE<precision && deltaW<precision){break;} //Convergence condition

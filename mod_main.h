@@ -51,7 +51,9 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
     double OP;
     double fE_hom;
     
-    for (int dds=0 ;dds<=80;dds+=2){
+    int ds_increment = 0.4*(double)Ns[2]/((double)nfa-1.0);
+    
+    for (int dds=0; f[0]<0.7 ;dds+= ds_increment){
         counter+=1;
         //Set parameters s
         updateparameters(f,Ns,dds);
@@ -95,6 +97,7 @@ void mod_main(double *f,double *mu,double **chiMatrix,double **w,double **phi,do
             
             //output free energy data
             outFile2 <<f[0]<<" "<< r_0 << " "<<r_0+(double)imax*dr<<" "<<dFE[radius]<<std::endl;
+            cout<<f[0]<<" "<< r_0 << " "<<r_0+(double)imax*dr<<" "<<dFE[radius]<<std::endl;
             
             //output concentration profile
             outputphi(phi,dr);

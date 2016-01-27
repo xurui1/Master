@@ -15,7 +15,7 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     
     //initial settings
     initial=2;
-    Coord=2; //if 1->Cartesian, if 2->Cylindrical, if 3->Spherical coordinate system
+    Coord=3; //if 1->Cartesian, if 2->Cylindrical, if 3->Spherical coordinate system
     
     //Length ratio of c homopolymer to diblock copolymer
     kappa=1.0;
