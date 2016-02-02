@@ -2,10 +2,11 @@
 #include "global.h"
 #include "parameters.h"
 #include "filename.h"
+#include "vol.h"
+#include "integrate.h"
 #include "omega.h"
 #include "TDMA.h"
 #include "solvediffeq.h"
-#include "vol.h"
 #include "phi.h"
 #include "Q_partition.h"
 #include "polymers.h"
@@ -64,10 +65,12 @@ int main( ){
     //calculate radius of membrane center
     mod_radius(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,A,B,C,D,E,F,nfa,mu_vec);
     
+    //reset parameters
+    //parameters(chi,f,&ds,Ns,&dr,mu);
     
     //calculate concentration profiles
     //mod_phi(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr,nfa,A,B,C,nradii,dFE,mu_vec);
-    mod_phif50(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr);
+   // mod_phif50(f,mu,chiMatrix,w,phi,eta,Ns,ds,chi,dr);
 
     
     ofstream outputrad;

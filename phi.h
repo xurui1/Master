@@ -3,54 +3,27 @@ void phi_total(double **phi, double dr, double volume){
     //Here I am calculating the total concentration of each species using a trapezoidal (?) rule.
     //This is an ugly function, and I'd like to rewrite it
     
-    double phiA1_tot,phiB1_tot,phiC_tot;
-    double phiA2_tot,phiB2_tot,phiA3_tot;
-    phiA1_tot=0.0;
-    phiB1_tot=0.0;
-    phiA2_tot=0.0;
-    phiB2_tot=0.0;
-    phiA3_tot=0.0;
-    phiC_tot=0.0;
-    double phi_tot=0.0;
-    int i;
+    double *phi_tot=create_1d_double_array(ChainType,"phi_tot");
     
-    
-    //ends
-    phiA1_tot+=0.5*phi[0][0]*dV(0,dr);
-    phiB1_tot+=0.5*phi[1][0]*dV(0,dr);
-    phiA2_tot+=0.5*phi[2][0]*dV(0,dr);
-    phiB2_tot+=0.5*phi[3][0]*dV(0,dr);
-    phiA3_tot+=0.5*phi[4][0]*dV(0,dr);
-    phiC_tot+=0.5*phi[5][0]*dV(0,dr);
-    
-    phiA1_tot+=0.5*phi[0][Nr-1]*dV(Nr-1,dr);
-    phiB1_tot+=0.5*phi[1][Nr-1]*dV(Nr-1,dr);
-    phiA2_tot+=0.5*phi[2][Nr-1]*dV(Nr-1,dr);
-    phiB2_tot+=0.5*phi[3][Nr-1]*dV(Nr-1,dr);
-    phiA3_tot+=0.5*phi[4][Nr-1]*dV(Nr-1,dr);
-    phiC_tot+=0.5*phi[5][Nr-1]*dV(Nr-1,dr);
-    
- 
-    for (i=1;i<(int)Nr-1;i++){
-        phiA1_tot+=phi[0][i]*dV(i,dr);
-        phiB1_tot+=phi[1][i]*dV(i,dr);
-        phiA2_tot+=phi[2][i]*dV(i,dr);
-        phiB2_tot+=phi[3][i]*dV(i,dr);
-        phiA3_tot+=phi[4][i]*dV(i,dr);
-        phiC_tot+=phi[5][i]*dV(i,dr);
+    //integrate concentrations and normalize by volume
+    for (int j=0;j<ChainType;j++){
+        phi_tot[j] = integratedV(phi[j],0,Nr,dr);
+        phi_tot[j] /= volume;
     }
     
-    //normalize by volume
-    phiA1_tot/=volume;
-    phiB1_tot/=volume;
-    phiA2_tot/=volume;
-    phiB2_tot/=volume;
-    phiA3_tot/=volume;
-    phiC_tot/=volume;
-    phi_tot=phiA1_tot+phiB1_tot+phiA2_tot+phiB2_tot+phiA3_tot+phiC_tot;
+    
+    
+    double total=0.0;
+    
+    for (int j=0;j<ChainType;j++){
+        total += phi_tot[j];
+    }
 
+    //output total average concentration, if ya want!
+    //cout<<total<<endl;
     
-    
+    destroy_1d_double_array(phi_tot);
+
 }
 
 /***************Here I calculate the various concentration profiles from the propagators******************/
@@ -66,6 +39,7 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
         phi[3][i]=0.0;
         phi[4][i]=0.0;
         phi[5][i]=0.0;
+        
         
             //phiA1 integration
             for(int s=0;s<(int)Ns[0]+1;s++){
@@ -143,55 +117,26 @@ void phi_calc(double **phi,double **qA1,double **qdagA1,double **qB1,double **qd
 /************Here I calculate the diblock/triblock order parameter************/
 double calcOP(double **phi, double dr, double volume){
     
+    //define average concentrations
     double phi_ABA;
     double phi_AB;
     double OP;
     
-    double phiA1_tot,phiB1_tot;
-    double phiA2_tot,phiB2_tot,phiA3_tot;
-    phiA1_tot=0.0;
-    phiB1_tot=0.0;
-    phiA2_tot=0.0;
-    phiB2_tot=0.0;
-    phiA3_tot=0.0;
+    double *phi_tot=create_1d_double_array(ChainType,"phi_tot");
 
-    
-    //ends
-    phiA1_tot+=0.5*phi[0][0]*dV(0,dr);
-    phiB1_tot+=0.5*phi[1][0]*dV(0,dr);
-    phiA2_tot+=0.5*phi[2][0]*dV(0,dr);
-    phiB2_tot+=0.5*phi[3][0]*dV(0,dr);
-    phiA3_tot+=0.5*phi[4][0]*dV(0,dr);
-    
-    phiA1_tot+=0.5*phi[0][Nr-1]*dV(Nr-1,dr);
-    phiB1_tot+=0.5*phi[1][Nr-1]*dV(Nr-1,dr);
-    phiA2_tot+=0.5*phi[2][Nr-1]*dV(Nr-1,dr);
-    phiB2_tot+=0.5*phi[3][Nr-1]*dV(Nr-1,dr);
-    phiA3_tot+=0.5*phi[4][Nr-1]*dV(Nr-1,dr);
-    
-    //middle
-    for (int i=1;i<(int)Nr-1;i++){
-        phiA1_tot+=phi[0][i]*dV(i,dr);
-        phiB1_tot+=phi[1][i]*dV(i,dr);
-        phiA2_tot+=phi[2][i]*dV(i,dr);
-        phiB2_tot+=phi[3][i]*dV(i,dr);
-        phiA3_tot+=phi[4][i]*dV(i,dr);
+    //integrate concentrations and normalize by volume
+    for (int j=0;j<ChainType;j++){
+        phi_tot[j] = integratedV(phi[j],0,Nr,dr);
+        phi_tot[j] /= volume;
     }
     
-    //normalize by volume
-    phiA1_tot/=volume;
-    phiB1_tot/=volume;
-    phiA2_tot/=volume;
-    phiB2_tot/=volume;
-    phiA3_tot/=volume;
-    
-    phi_AB = phiA1_tot+phiB1_tot;
-    phi_ABA = phiA2_tot+phiB2_tot+phiA3_tot;
+    phi_AB = phi_tot[0]+phi_tot[1];
+    phi_ABA = phi_tot[0]+phi_tot[1]+phi_tot[2];
     OP = (phi_AB-phi_ABA)/(phi_AB+phi_ABA);
     
-    return OP;
-
+    destroy_1d_double_array(phi_tot);
     
+    return OP;
     
 }
 
@@ -275,6 +220,10 @@ int mmb_half(double **phi, int imax, int pin){
             
     }
     
-    return (outer_intersection+pin)/2;
+    double result = ((double)outer_intersection+(double)pin)/2.0;
+    
+    int output = result;
+    
+    return output;
     
 }

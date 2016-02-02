@@ -34,7 +34,7 @@ double vol(double dr){
     
 }
 
-double Ucellvol(double dr){
+double Ucellvol_left(double dr){
     //Volume
     if (Coord==1){
         return ((double)Nr/2.0-1.0)*pow(dr,3.0);        //Cartesian
@@ -44,6 +44,23 @@ double Ucellvol(double dr){
     }
     else if (Coord==3){
         return (1.0/3.0)*(pow(r_0+((double)Nr/2.0-1.0)*dr,3.0)-pow(r_0,3.0))*pow(dr,2.0); //spherical
+    }
+    else{
+        cout<<"Choose another integer for Coordinate"<<endl;
+        return 0;
+    }
+    
+}
+double Ucellvol_right(double dr){
+    //Volume
+    if (Coord==1){
+        return ((double)Nr/2.0-1.0)*pow(dr,3.0);        //Cartesian
+    }
+    else if (Coord==2){
+        return (1.0/2.0)*(pow(r_0+((double)Nr-1.0)*dr,2.0)-pow(r_0+((double)Nr/2.0-1.0)*dr,2.0))*pow(dr,2.0); //cylindrical
+    }
+    else if (Coord==3){
+        return (1.0/3.0)*(pow(r_0+((double)Nr-1.0)*dr,3.0)-pow(r_0+((double)Nr/2.0-1.0)*dr,3.0))*pow(dr,2.0); //spherical
     }
     else{
         cout<<"Choose another integer for Coordinate"<<endl;

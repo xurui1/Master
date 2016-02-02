@@ -3,7 +3,7 @@
 void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     
     //number of monomers
-    int Ds=100;
+    int Ds=200;
     
     double chi_input;
     
@@ -14,8 +14,8 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     double delr;
     
     //initial settings
-    initial=2;
-    Coord=3; //if 1->Cartesian, if 2->Cylindrical, if 3->Spherical coordinate system
+    initial=3;
+    Coord=1; //if 1->Cartesian, if 2->Cylindrical, if 3->Spherical coordinate system
     
     //Length ratio of c homopolymer to diblock copolymer
     kappa=1.0;
@@ -37,7 +37,7 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     if (poly==0){
         mu[0]=-20.0;      //AB
         mu[1]=0.0;      //ABA
-        mu[2]=-5.0;    //C
+        mu[2]=-4.81642;    //C
     }
     else if (poly==1){
         mu[0]=0.0;      //AB
@@ -51,9 +51,9 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     }
     
     //Chain length array
-    Ns[0]=30;            //A blocks
-    Ns[1]=70;            //B blocks
-    Ns[2]=100;            //C blocks
+    Ns[0]=60;            //A blocks
+    Ns[1]=140;            //B blocks
+    Ns[2]=200;            //C blocks
     
     //Chain fraction array
     f[0]=Ns[0]/Ds;      //A
@@ -63,7 +63,7 @@ void parameters(double *chi,double *f,double *ds,int *Ns,double *dr,double *mu){
     //cout<<Ns[0]<<" "<<Ns[1]<<" "<<Ns[2]<<endl;
     
     //Step size in r,z direction
-    *dr=12.0/100.0;
+    *dr=12.0/(double)Nr;
     delr=*dr;
     
     
@@ -129,8 +129,8 @@ void updateparameters(double *f, int *Ns, int dds){
     double Ds=100.0;
     
     //Chain length array
-    Ns[0]=30+dds;
-    Ns[1]=70-dds;
+    Ns[0]=60+dds;
+    Ns[1]=140-dds;
     
     //Chain fraction array
     f[0]=(double)Ns[0]/Ds;    //A

@@ -31,7 +31,11 @@ void mod_phif50(double *f,double *mu,double **chiMatrix,double **w,double **phi,
     
     //reset radius
     r_0=0.5;
-        
+    
+    //reset omega
+    omega(w);
+
+    
     //calculate free energy minus homogeneneous free energy
     double dFE=FreeEnergy(w,phi,eta,Ns,ds,chi,dr,chiMatrix,mu,volume,f,pin,1);
     

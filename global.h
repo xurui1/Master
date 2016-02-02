@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define Nr 100
+#define Nr 200
 #define ChainType 6
 #define Pi 3.14159
 
@@ -26,8 +26,8 @@ int Coord;
 int poly=0;
 
 //define my update parameters
-double gamma_up = 0.005;
-double epsilon_up = 0.005;
+double gamma_up = 0.05;
+double epsilon_up = 0.05;
 //set to 0.05 for chi<30
 //set to 0.005 for 30<chi<40
 

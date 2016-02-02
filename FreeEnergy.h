@@ -61,12 +61,18 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         //Calculate components for new field and interaction free energies
         for(int i=0;i<Nr;i++){
             for(int ii=0;ii<ChainType;ii++){
-                newW[ii][i]=0.0;            //set field update to zero
+                
+                //reset chem potential update
+                newW[ii][i]=0.0;
+                
                 for(int jj=0;jj<ChainType;jj++){
                     newW[ii][i]+=(chiMatrix[ii][jj]*phi[jj][i]);
                 }
+                
+                //add incompressibility
                 newW[ii][i]+=eta[i];
                 
+                //apply pinning condition
                 if (mmb==1){
                     if (ii==0 || ii == 2 || ii==4){
                         newW[ii][i]-=sigma[i];
@@ -92,8 +98,8 @@ double FreeEnergy(double **w, double **phi, double *eta, int *Ns, double ds, dou
         deltafE=fabs(currentfE-oldfE);
         
         //Print free energy, difference in free energy, change in omega field to screen
-        if (iter%1000==0 && out_loop==1){std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop[0]<<" "<<loop[1]<<" "<<bridge[0]<<" "<<bridge[1]<<std::endl;}
-        else if  (iter%1000==0 && out_loop==0){std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop[0]<<" "<<loop[1]<<" "<<bridge[0]<<" "<<bridge[1]<<std::endl;}
+        if (iter%100==0 && out_loop==1){std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop[0]<<" "<<loop[1]<<" "<<bridge[0]<<" "<<bridge[1]<<std::endl;}
+        else if  (iter%100==0 && out_loop==0){std::cout<<iter<<" fE:"<<currentfE<< " dfE:"<<currentfE-fE_hom<<" " << deltaW<<" "<<fE_hom<<" "<<loop[0]<<" "<<loop[1]<<" "<<bridge[0]<<" "<<bridge[1]<<std::endl;}
 
         
 
